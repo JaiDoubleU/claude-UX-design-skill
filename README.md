@@ -1,28 +1,19 @@
-# Enverus UX Design Skill
+# Claude UX Design Skill
 
-A Claude Code skill for UX design work — design audits, component spec writing, token system audits, and user flow/IA documentation. At the moment it's specific to the **Enverus One** design system (shadcn/ui + Tailwind CSS + OKLCH tokens) but support can be added for other design systems by adding them under references.
+A Claude Code skill for UX design work — design audits, component spec writing, token system audits, and user flow/IA documentation. At the moment it's specific to the design system (shadcn/ui + Tailwind CSS + OKLCH tokens) but support can be added for other design systems by adding them under references.
 
 ## What this skill does
 
 - Design audits and UX reviews mapped to Nielsen's 10 Heuristics and WCAG 2.2 AA
 - Component spec documentation for design system handoff
-- Token audit logic for the Enverus One design system
+- Token audit logic for the design system
 - User flow and information architecture documentation
 
 ## Installing in Claude Code
 
-There are three ways to add this skill depending on your setup.
+There are two ways to add this skill depending on your setup.
 
-### Option A — Plugin marketplace (recommended: updates automatically)
-
-Options B and C below are one-time copies — you won't see future changes to this repo unless you re-copy it by hand. This repo is packaged as a Claude Code plugin, so installing it as a marketplace source (this option) has Claude Code pull updates for you.
-
-**Interactive (local CLI / desktop app):**
-
-```
-/plugin marketplace add enverus-ea/enverus-ux-design-skill
-/plugin install enverus-one-ux-design@enverus-ux-design
-```
+The options below are one-time copies — you won't see future changes to this repo unless you re-copy it by hand. This repo is packaged as a Claude Code plugin, so installing it as a marketplace source (this option) has Claude Code pull updates for you.
 
 **Via settings.json** (works in any environment, including ones where `/plugin` isn't available — e.g. Claude Code on the web):
 
@@ -31,16 +22,13 @@ Add this to `~/.claude/settings.json` (just for you) or your project's `.claude/
 ```json
 {
   "extraKnownMarketplaces": {
-    "enverus-ux-design": {
+    "Claude-ux-design": {
       "source": {
         "source": "github",
-        "repo": "enverus-ea/enverus-ux-design-skill"
+        "repo": "jaidoubleu/claude-ux-design-skill"
       },
       "autoUpdate": true
     }
-  },
-  "enabledPlugins": {
-    "enverus-one-ux-design@enverus-ux-design": true
   }
 }
 ```
@@ -49,41 +37,32 @@ Restart Claude Code (or start a new session) after saving.
 
 **Staying up to date:** `"autoUpdate": true` above makes Claude Code pull the latest version of this marketplace — and the plugin installed from it — automatically each time it starts, once changes here are merged to `main`. To force a refresh without waiting for the next session start:
 
-```
-/plugin marketplace update enverus-ux-design
-```
+### Option A — Global skill (available in all projects)
 
-### Option B — Global skill (available in all projects)
-
-Clone the repo, then copy the skill folder (`skills/enverus-ux-design-skill`, the one that contains `SKILL.md`) into your global Claude skills directory:
+Clone the repo, then copy the skill folder (`skills/claude-ux-design-skill`, the one that contains `SKILL.md`) into your global Claude skills directory:
 
 ```bash
-git clone git@github.com:enverus-ea/enverus-ux-design-skill.git
-cp -r enverus-ux-design-skill/skills/enverus-ux-design-skill ~/.claude/skills/enverus-ux-design-skill
+git clone git@github.com:jaidoubleu/claude-ux-design-skill.git
+cp -r Claude-ux-design-skill/skills/claude-ux-design-skill ~/.claude/skills/claude-ux-design-skill
 ```
 
 Claude Code auto-discovers skills in `~/.claude/skills/` by reading each folder's `SKILL.md`.
 
-### Option C — Project-local skill
+### Option B — Project-local skill
 
-From your clone of this repo, copy the skill folder (`skills/enverus-ux-design-skill`) into a `skills/` directory at your project root, then register it in your project's `CLAUDE.md`:
+From your clone of this repo, copy the skill folder (`skills/claude-ux-design-skill`) into a `skills/` directory at your project root, then register it in your project's `CLAUDE.md`:
 
 ```bash
 mkdir -p my-project/skills
-cp -r enverus-ux-design-skill/skills/enverus-ux-design-skill my-project/skills/
+cp -r Claude-ux-design-skill/skills/claude-ux-design-skill my-project/skills/
 ```
 
 In `my-project/.claude/CLAUDE.md`, add:
 
 ```markdown
 ## Skills
-- `skills/enverus-ux-design-skill` — UX design audits, component specs, token audits
+- `skills/claude-ux-design-skill` — UX design audits, component specs, token audits
 ```
-
-**If you hit a GitHub SSO error:** `enverus-ea` enforces SAML SSO. If Claude Code (or your GitHub connector) reports a 403 asking you to authorize the org:
-
-1. Confirm you're actually a member of the `enverus-ea` GitHub org — SSO authorization can't grant membership, only unlock an existing member's token.
-2. Go to **github.com/settings/applications** → find the Claude/Anthropic OAuth app → under **Organization access**, click **Grant** next to `enverus-ea`.
 
 ### Verifying the install
 
@@ -93,7 +72,7 @@ In any Claude Code session, run:
 /skills
 ```
 
-You should see `enverus-ux-design-skill` listed. If not, confirm the folder path contains a `SKILL.md` with `name: enverus-ux-design-skill` in its frontmatter.
+You should see `Claude-ux-design-skill` listed. If not, confirm the folder path contains a `SKILL.md` with `name: Claude-ux-design-skill` in its frontmatter.
 
 ## Using the skill
 
@@ -104,18 +83,18 @@ Audit this screen for WCAG and heuristic issues.
 
 Write a component spec for the filter dropdown.
 
-Audit this Enverus One component for token leakage and dark mode compliance.
+Audit thi component for token leakage and dark mode compliance.
 
 Map the password reset flow with error states and edge cases.
 
-How do I add a new semantic token to the Enverus One system?
+How do I add a new semantic token to this design system?
 ```
 
 The skill routes to the right reference files automatically based on what you're asking for. You don't need to name a specific file or reference the skill explicitly — it triggers from task type.
 
 ### How routing works
 
-When invoked, the skill reads the reference files relevant to the task (all paths below are relative to the skill root, `skills/enverus-ux-design-skill/`):
+When invoked, the skill reads the reference files relevant to the task (all paths below are relative to the skill root, `skills/claude-ux-design-skill/`):
 
 | Task type | Files read |
 |-----------|-----------|
@@ -136,8 +115,6 @@ Files are read on-demand — nothing is pre-loaded automatically.
 
 ## Token system
 
-This skill is specific to **Enverus One** — not the older Prism/`--env-*` token system. Detection cues:
-
 | Cue | Means |
 |-----|-------|
 | Unprefixed CSS variables: `--background`, `--primary` | Enverus One |
@@ -150,14 +127,13 @@ This skill is specific to **Enverus One** — not the older Prism/`--env-*` toke
 
 ```
 .claude-plugin/
-  marketplace.json                    — Marketplace manifest (this repo as a plugin source)
   plugin.json                         — Plugin manifest (name, version, author)
 ABOUT.md                              — One-page summary for consumers
 evals/
   evals.json                          — Eval prompts and assertions for testing the skill
   benchmark.md                        — Benchmark results log
 skills/
-  enverus-ux-design-skill/
+  Claude-ux-design-skill/
     SKILL.md                          — Skill manifest (triggers, routing, output standards)
     references/
       frameworks.md                   — Nielsen heuristics, WCAG 2.2 AA, CLT — severity scale and finding format
