@@ -1,6 +1,6 @@
-# Enverus UX Design Skill
+# Claude UX Design Skill
 
-Structured UX design guidance for Enverus One — covering design audits, component spec writing, token system audits, and user flow documentation. Grounded in Nielsen's 10 Heuristics, WCAG 2.2 AA, and Atomic Design methodology.
+Structured UX design guidance for Claude One — covering design audits, component spec writing, token system audits, and user flow documentation. Grounded in Nielsen's 10 Heuristics, WCAG 2.2 AA, and Atomic Design methodology.
 
 ## What it does
 
@@ -13,15 +13,15 @@ Structured UX design guidance for Enverus One — covering design audits, compon
 
 ## Token system
 
-Specific to the **Enverus One** design system (shadcn/ui + Tailwind v4, unprefixed tokens, OKLCH values). Support can be added for other design systems by adding them under references.
+Specific to this design system (shadcn/ui + Tailwind v4, unprefixed tokens, OKLCH values). Support can be added for other design systems by adding them under references.
 
 ## Example prompts
 
 - "Audit this screen for WCAG and heuristic issues."
 - "Write a component spec for a primary button."
-- "Audit this Enverus One component for token leakage and dark mode issues."
+- "Audit thi component for token leakage and dark mode issues."
 - "Map the password reset flow with error states and edge cases."
-- "How do I add a new semantic token to the Enverus One system?"
+- "How do I add a new semantic token to this design system?"
 
 ## How the skill works
 
