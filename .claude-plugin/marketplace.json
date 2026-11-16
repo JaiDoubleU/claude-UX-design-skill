@@ -1,0 +1,17 @@
+{
+  "name": "enverus-ux-design",
+  "owner": {
+    "name": "Enverus UX",
+    "email": "jason.shannon@enverus.com",
+    "url": "https://github.com/enverus-ea"
+  },
+  "description": "Enverus UX design skill for claude prototyping, ux audits, component specs, design tokens, and user flows.",
+  "plugins": [
+    {
+      "name": "enverus-one-ux-design",
+      "source": "./",
+      "description": "Expert UX design skill covering prototype creation using Enverus One tokens and components, ux audits, component spec writing, variable/token systems, and user flow & IA design.",
+      "version": "1.2.3"
+    }
+  ]
+}

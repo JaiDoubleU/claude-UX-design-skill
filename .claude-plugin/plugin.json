@@ -1,0 +1,13 @@
+{
+  "name": "enverus-one-ux-design",
+  "displayName": "Enverus One UX Design",
+  "description": "Expert UX design skill covering Figma audits, component spec writing, variable/token systems, and user flow & IA design, plus building Enverus One pages with the sidebar, top navbar and Lucide icons.",
+  "version": "1.2.3",
+  "author": {
+    "name": "Jason Shannon",
+    "email": "jason.shannon@enverus.com"
+  },
+  "homepage": "https://github.com/enverus-ea/enverus-ux-design-skill",
+  "repository": "https://github.com/enverus-ea/enverus-ux-design-skill",
+  "license": "MIT"
+}

@@ -1,0 +1,165 @@
+/*
+ * Enverus One Design Tokens
+ *
+ * Canonical CSS custom properties for Enverus One components.
+ * Source: packages/ui/src/css/shadcn-tokens.css in env-one.ui
+ *
+ * Enverus One is built on shadcn/ui conventions — variable names follow the
+ * shadcn/ui token contract. Values use OKLCH format (Tailwind v4).
+ *
+ * Light theme: :root
+ * Dark theme:  .dark-theme class on <html>
+ *
+ * Note: --destructive-foreground is the label color for --destructive fills.
+ * White in light mode (4.76:1) and near-black in dark mode (6.84:1), where
+ * --destructive is a lighter red. Both pass AA for normal text.
+ *
+ * Note: --sidebar-primary-foreground is an alias of --primary-foreground.
+ *
+ * Note: --env-one-background (defined in the env-one.ui token files) is not
+ * used by this skill. --background is the page background here.
+ */
+
+/*
+ * ── Tailwind v4 @theme block ────────────────────────────────────────────────
+ *
+ * This file defines only the raw CSS custom properties (:root / .dark-theme).
+ * The @theme inline { } block that maps them to Tailwind utility classes
+ * (bg-primary, text-foreground, etc.) lives in the project's global CSS file,
+ * NOT here — it is project-specific and should not be duplicated in this
+ * reference file.
+ *
+ * Example of what belongs in the project's tailwind.css:
+ *
+ *   @theme inline {
+ *     --color-background:        var(--background);
+ *     --color-foreground:        var(--foreground);
+ *     --color-primary:           var(--primary);
+ *     --color-primary-foreground:var(--primary-foreground);
+ *     --color-destructive-foreground:var(--destructive-foreground);
+ *     --color-accent-brand-light:var(--accent-brand-light);
+ *     --radius-lg:               var(--radius);
+ *     ...
+ *   }
+ */
+
+/* ── Light theme ────────────────────────────────────────────────────────── */
+:root {
+  --background:                  oklch(0.95 0 0);
+  --foreground:                  oklch(0.145 0 0);
+
+  --card:                        oklch(0.98 0 0);
+  --card-foreground:             oklch(0.145 0 0);
+
+  --popover:                     oklch(1 0 0);
+  --popover-foreground:          oklch(0.145 0 0);
+
+  /* Primary — Enverus brand green (same value in light and dark) */
+  --primary:                     oklch(0.544 0.149 138.62);
+  --primary-foreground:          oklch(1 0 0);
+
+  /* Brand hover — lighter green used for hover on --primary fills (matches env-one.ui accent-brand-light) */
+  --accent-brand-light:          oklch(0.637 0.182 139.71);   /* #44a428 — hover */
+
+  --secondary:                   oklch(0.967 0.001 286.375);
+  --secondary-foreground:        oklch(0.21 0.006 285.885);
+
+  --muted:                       oklch(0.94 0 0);
+  --muted-foreground:            oklch(0.4 0 0);
+
+  --accent:                      oklch(0.97 0 0);
+  --accent-foreground:           oklch(0.205 0 0);
+
+  --destructive:                 oklch(0.577 0.245 27.325);
+  --destructive-foreground:      oklch(1 0 0);
+
+  --border:                      oklch(0% 0 0 / .2);
+  --input:                       oklch(88% 0 0);
+  --ring:                        oklch(0.708 0 0);
+
+  --radius:                      0.625rem;
+
+  /* Sidebar */
+  --sidebar:                     oklch(0.98 0 0);
+  --sidebar-foreground:          oklch(0.145 0 0);
+  --sidebar-primary:             oklch(0.544 0.149 138.62);
+  --sidebar-primary-foreground:  var(--primary-foreground);
+  --sidebar-accent:              oklch(0.97 0 0);
+  --sidebar-accent-foreground:   oklch(0.205 0 0);
+  --sidebar-border:              oklch(0% 0 0 / 0.18);
+  --sidebar-ring:                oklch(0.708 0 0);
+
+  /* Data visualization — greyscale lightness scale */
+  --chart-1:                     oklch(0.87 0 0);
+  --chart-2:                     oklch(0.556 0 0);
+  --chart-3:                     oklch(0.439 0 0);
+  --chart-4:                     oklch(0.371 0 0);
+  --chart-5:                     oklch(0.269 0 0);
+
+  /* Semantic status (no -foreground companions — verify contrast manually) */
+  --success:                     oklch(0.55 0.16 140);
+  --info:                        oklch(0.481 0.094 239.6);
+  --warning:                     oklch(0.756 0.157 76.6);
+  --link:                        oklch(0.46 0.2 258);
+  --ai:                          oklch(0.513 0.227 314.3);
+}
+
+/* ── Dark theme ─────────────────────────────────────────────────────────── */
+.dark-theme {
+
+  --background:                  oklch(20.5% 0 0);
+  --foreground:                  oklch(0.985 0 0);
+
+  --card:                        oklch(0.24 0 0);
+  --card-foreground:             oklch(0.985 0 0);
+
+  --popover:                     oklch(0.26 0 0);
+  --popover-foreground:          oklch(0.985 0 0);
+
+  /* Primary — Enverus brand green (same value as light) */
+  --primary:                     oklch(0.544 0.149 138.62);
+  --primary-foreground:          oklch(1 0 0);
+
+  /* Brand hover — lighter green used for hover on --primary fills (matches env-one.ui accent-brand-light) */
+  --accent-brand-light:          oklch(0.637 0.182 139.71);   /* #44a428 — hover */
+
+  --secondary:                   oklch(0.33 0.006 286.033);
+  --secondary-foreground:        oklch(0.85 0 0);
+
+  --muted:                       oklch(0.325 0 0);
+  --muted-foreground:            oklch(0.708 0 0);
+
+  --accent:                      oklch(0.325 0 0);
+  --accent-foreground:           oklch(0.985 0 0);
+
+  --destructive:                 oklch(0.704 0.191 22.216);
+  --destructive-foreground:      oklch(0.145 0 0);
+
+  --border:                      oklch(100% 0 0 / .1);
+  --input:                       oklch(100% 0 0 / .15);
+  --ring:                        oklch(0.556 0 0);
+
+  /* Sidebar */
+  --sidebar:                     oklch(0.24 0 0);
+  --sidebar-foreground:          oklch(0.985 0 0);
+  --sidebar-primary:             oklch(0.544 0.149 138.62);
+  --sidebar-primary-foreground:  var(--primary-foreground);
+  --sidebar-accent:              oklch(0.269 0 0);
+  --sidebar-accent-foreground:   oklch(0.985 0 0);
+  --sidebar-border:              oklch(1 0 0 / 10%);
+  --sidebar-ring:                oklch(0.556 0 0);
+
+  /* Data visualization — greyscale lightness scale (same as light) */
+  --chart-1:                     oklch(0.87 0 0);
+  --chart-2:                     oklch(0.556 0 0);
+  --chart-3:                     oklch(0.439 0 0);
+  --chart-4:                     oklch(0.371 0 0);
+  --chart-5:                     oklch(0.269 0 0);
+
+  /* Semantic status */
+  --success:                     oklch(0.72 0.15 140);
+  --info:                        oklch(0.72 0.1 240.6);
+  --warning:                     oklch(0.715 0.149 76.3);
+  --link:                        oklch(0.68 0.17 258);
+  --ai:                          oklch(0.643 0.244 313.7);
+}

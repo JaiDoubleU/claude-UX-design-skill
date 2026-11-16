@@ -1,0 +1,480 @@
+<meta charset="utf-8">
+<title>Token System Preview — Enverus One</title>
+<link rel="stylesheet" href="enverus-one/tokens.css">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Chrome tokens — always dark, neutral achromatic ── */
+:root {
+  color-scheme: dark;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Chrome header ────────────────────────────────────────── */
+.chrome-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  height: 44px;
+  background: var(--sidebar);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.chrome-title {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+.mode-toggle {
+  display: flex;
+  gap: 2px;
+  background: var(--secondary);
+  border-radius: 7px;
+  padding: 2px;
+}
+.mode-toggle button {
+  border: none;
+  background: transparent;
+  padding: 4px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 5px;
+  color: var(--muted-foreground);
+  transition: background 0.12s, color 0.12s;
+  font-family: inherit;
+}
+.mode-toggle button.active {
+  background: var(--accent);
+  color: var(--foreground);
+  box-shadow: 0 1px 3px rgba(0,0,0,.12);
+}
+
+/* ── Demo panel ───────────────────────────────────────────── */
+.demo-panel {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 32px 24px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.slabel {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+/* ══════════════════════════════════════════════════════════
+   ENVERUS ONE DEMO
+   Tokens imported from enverus-one/tokens.css via <link>
+   ══════════════════════════════════════════════════════════ */
+
+/* Derived status muted/text pairs — no direct token in tokens.css for these */
+.e1 {
+  --succ-muted: color-mix(in oklab, var(--primary) 18%, var(--background));
+  --succ-text:  color-mix(in oklab, var(--primary) 80%, oklch(0 0 0));
+  --warn-muted: color-mix(in oklab, var(--warning) 18%, var(--background));
+  --warn-text:  var(--foreground);
+  --dest-muted: color-mix(in oklab, var(--destructive) 15%, var(--background));
+  --dest-text:  color-mix(in oklab, var(--destructive) 85%, oklch(0 0 0));
+  --info-muted: color-mix(in oklab, var(--info) 15%, var(--background));
+  --info-text:  color-mix(in oklab, var(--info) 85%, oklch(0 0 0));
+
+  background: var(--background);
+  color: var(--foreground);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 14px;
+}
+
+/* Dark mode: status text mixes toward white (not black) so it stays lighter than the tinted background */
+.dark-theme .e1 {
+  --succ-text: color-mix(in oklab, var(--primary) 80%, oklch(1 0 0));
+  --warn-text: color-mix(in oklab, var(--warning) 70%, oklch(1 0 0));
+  --dest-text: color-mix(in oklab, var(--destructive) 85%, oklch(1 0 0));
+  --info-text: color-mix(in oklab, var(--info) 85%, oklch(1 0 0));
+}
+
+.e1 .slabel { color: var(--muted-foreground); }
+
+/* Buttons */
+.e1 .btn-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.e1 .btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 36px; padding: 0 1rem;
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.875rem; font-weight: 500;
+  cursor: pointer; white-space: nowrap;
+  transition: background 0.1s, opacity 0.1s;
+}
+.e1 .btn-sm { height: 32px; padding: 0 0.75rem; font-size: 0.8125rem; }
+.e1 .btn-primary     { background: var(--primary);     color: var(--primary-foreground); }
+.e1 .btn-secondary   { background: var(--secondary);   color: var(--secondary-foreground); }
+.e1 .btn-outline     { background: transparent;        color: var(--foreground); border-color: var(--border); }
+.dark-theme .e1 .btn-outline { border-color: var(--input); background: color-mix(in oklab, var(--input) 30%, transparent); }
+.e1 .btn-ghost       { background: transparent;        color: var(--foreground); }
+.e1 .btn-destructive { background: var(--destructive); color: var(--destructive-foreground); }
+
+/* Form */
+.e1 .form-group { display: flex; flex-direction: column; gap: 6px; }
+.e1 .form-label { font-size: 0.875rem; font-weight: 500; color: var(--foreground); }
+.e1 .form-input {
+  height: 36px; padding: 0 0.75rem; width: 100%;
+  background: var(--background); border: 1px solid var(--input);
+  border-radius: var(--radius); color: var(--foreground);
+  font-family: system-ui, -apple-system, sans-serif; font-size: 0.875rem;
+  outline: none;
+}
+.e1 .form-input::placeholder { color: var(--muted-foreground); }
+.e1 .form-input:focus-visible {
+  border-color: var(--ring);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ring) 20%, transparent);
+}
+.e1 .helper { font-size: 0.8125rem; color: var(--muted-foreground); }
+
+/* Badges */
+.e1 .badge-row { display: flex; gap: 6px; flex-wrap: wrap; }
+.e1 .badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 0.75rem; font-weight: 500; padding: 2px 8px;
+  border-radius: 9999px; border: 1px solid transparent;
+}
+.e1 .bs  { background: var(--succ-muted); color: var(--succ-text); }
+.e1 .bw  { background: var(--warn-muted); color: var(--warn-text); }
+.e1 .bd  { background: var(--dest-muted); color: var(--dest-text); }
+.e1 .bi  { background: var(--info-muted); color: var(--info-text); }
+.e1 .bl  { background: color-mix(in srgb, var(--link) 12%, transparent); color: var(--link); }
+.e1 .bai { background: color-mix(in srgb, var(--ai)   12%, transparent); color: var(--ai); }
+
+/* Alerts */
+.e1 .alert-stack { display: flex; flex-direction: column; gap: 8px; }
+.e1 .alert {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 12px 14px; border-radius: var(--radius);
+  font-size: 0.875rem; line-height: 1.5; border: 1px solid transparent;
+}
+.e1 .alert-icon  { flex-shrink: 0; margin-top: 1px; font-style: normal; }
+.e1 .alert-title { font-weight: 600; font-size: 0.875rem; margin-bottom: 1px; }
+.e1 .alert-desc  { font-size: 0.8125rem; }
+.e1 .as { background: var(--succ-muted); color: var(--succ-text); }
+.e1 .aw { background: var(--warn-muted); color: var(--warn-text); }
+.e1 .ad { background: var(--dest-muted); color: var(--dest-text); }
+.e1 .ai { background: var(--info-muted); color: var(--info-text); }
+
+/* Card */
+.e1 .card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: calc(var(--radius) + 4px);
+  padding: 1.5rem;
+  display: flex; flex-direction: column; gap: 0.75rem;
+}
+.e1 .card-title       { font-size: 1.125rem; font-weight: 600; color: var(--foreground); }
+.e1 .card-description { font-size: 0.875rem; color: var(--muted-foreground); margin-top: 2px; }
+.e1 .card-body        { font-size: 0.875rem; color: var(--muted-foreground); line-height: 1.6; }
+.e1 .card-footer      { display: flex; justify-content: flex-end; gap: 8px; padding-top: 0.25rem; }
+
+/* Surface chips */
+.e1 .surface-stack { display: flex; gap: 1px; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); }
+.e1 .surface-chip  { flex: 1; padding: 8px 6px; font-size: 10px; text-align: center; font-family: 'SF Mono', monospace; line-height: 1.3; }
+.e1 .sbase  { background: var(--muted);      color: var(--muted-foreground); }
+.e1 .scard  { background: var(--card);       color: var(--muted-foreground); border-left: 1px solid var(--border); border-right: 1px solid var(--border); }
+.e1 .smuted { background: var(--background); color: var(--muted-foreground); }
+.e1 .ppri   { background: var(--primary);       color: var(--primary-foreground); }
+.e1 .plight { background: var(--accent-brand-light); color: var(--primary-foreground); }
+
+/* Type scale */
+.e1 .type-stack { display: flex; flex-direction: column; gap: 6px; }
+.e1 .type-display { font-size: 2.25rem; font-weight: 700; line-height: 1.11; color: var(--foreground); letter-spacing: -0.025em; text-wrap: balance; }
+.e1 .type-heading { font-size: 1.5rem;  font-weight: 600; line-height: 1.33; color: var(--foreground); letter-spacing: -0.01em; }
+.e1 .type-title   { font-size: 1rem;    font-weight: 600; line-height: 1.5;  color: var(--foreground); }
+.e1 .type-body    { font-size: 0.875rem; font-weight: 400; line-height: 1.57; color: var(--foreground); }
+.e1 .type-small   { font-size: 0.75rem;  font-weight: 400; line-height: 1.5;  color: var(--muted-foreground); }
+
+/* WCAG contrast table */
+.contrast-table { display: flex; flex-direction: column; gap: 3px; }
+.cr-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 5px 8px; border-radius: 6px;
+  background: rgba(0,0,0,0.04);
+}
+.dark-theme .cr-row { background: rgba(255,255,255,0.04); }
+.cr-swatches {
+  display: flex; border-radius: 4px; overflow: hidden;
+  flex-shrink: 0; width: 36px; height: 20px;
+  box-shadow: 0 0 0 1px rgba(128,128,128,0.25);
+}
+.cr-swatch-bg, .cr-swatch-fg { flex: 1; }
+.cr-label { flex: 1; font-size: 12px; opacity: 0.9; }
+.cr-lg-note { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; opacity: 0.6; margin-left: 4px; }
+.cr-ratio { font-family: 'SF Mono', 'Fira Code', Consolas, monospace; font-size: 11px; font-variant-numeric: tabular-nums; min-width: 44px; text-align: right; opacity: 0.75; }
+.cr-badges { display: flex; gap: 4px; }
+.cr-badge { font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 9999px; letter-spacing: 0.03em; white-space: nowrap; }
+.e1 .cr-pass { background: var(--succ-muted); color: var(--succ-text); }
+.e1 .cr-fail { background: var(--dest-muted); color: var(--dest-text); }
+
+/* Lucide icons */
+.e1 .icon-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+.e1 .icon-head .slabel { margin-bottom: 0; }
+.e1 .icon-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 8px; }
+.e1 .icon-cell {
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  padding: 14px 6px 10px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--foreground);
+}
+.e1 .icon-cell svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.e1 .icon-name { font-size: 11px; line-height: 1.3; color: var(--muted-foreground); text-align: center; word-break: break-word; }
+.e1 .icon-note { margin-top: 10px; font-size: 12px; color: var(--muted-foreground); }
+
+/* Responsive */
+@media (max-width: 480px) {
+  .demo-panel { padding: 24px 16px 40px; }
+}
+</style>
+
+<header class="chrome-header">
+  <span class="chrome-title">Enverus One · Token Preview</span>
+  <div class="mode-toggle">
+    <button class="active" id="btn-light" onclick="setMode('light')" type="button">Light</button>
+    <button id="btn-dark" onclick="setMode('dark')" type="button">Dark</button>
+  </div>
+</header>
+
+<div class="demo-panel e1" id="e1-demo">
+
+  <div>
+    <div class="slabel">Buttons</div>
+    <div class="btn-row">
+      <button class="btn btn-primary" type="button">Primary</button>
+      <button class="btn btn-secondary" type="button">Secondary</button>
+      <button class="btn btn-outline" type="button">Outline</button>
+      <button class="btn btn-destructive" type="button">Destructive</button>
+    </div>
+    <div class="btn-row" style="margin-top:8px;">
+      <button class="btn btn-sm btn-primary" type="button">Small primary</button>
+      <button class="btn btn-sm btn-secondary" type="button">Small secondary</button>
+    </div>
+  </div>
+
+  <div>
+    <div class="slabel">Form input</div>
+    <div class="form-group">
+      <label class="form-label">Well name</label>
+      <input class="form-input" type="text" placeholder="e.g. Permian Basin #14-A">
+      <span class="helper">Enter a unique well identifier.</span>
+    </div>
+  </div>
+
+  <div>
+    <div class="slabel">Status badges — plus --link and --ai tokens</div>
+    <div class="badge-row">
+      <span class="badge bs">● Completed</span>
+      <span class="badge bw">● In review</span>
+      <span class="badge bd">● Failed</span>
+      <span class="badge bi">● Processing</span>
+      <span class="badge bl">↗ View docs</span>
+      <span class="badge bai">✦ AI response</span>
+    </div>
+  </div>
+
+  <div>
+    <div class="slabel">Status alerts — success / warning / info / destructive all built-in</div>
+    <div class="alert-stack">
+      <div class="alert as"><i class="alert-icon">✓</i><div><div class="alert-title">Export complete</div><div class="alert-desc">Your data export is ready to download.</div></div></div>
+      <div class="alert aw"><i class="alert-icon">⚠</i><div><div class="alert-title">Approaching limit</div><div class="alert-desc">You're using 90% of your storage quota.</div></div></div>
+      <div class="alert ad"><i class="alert-icon">✕</i><div><div class="alert-title">Import failed</div><div class="alert-desc">File format not recognized. Try CSV or JSON.</div></div></div>
+      <div class="alert ai"><i class="alert-icon">ⓘ</i><div><div class="alert-title">Scheduled maintenance</div><div class="alert-desc">System downtime on Jul 30 at 2:00 AM UTC.</div></div></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="slabel">Card — background + border, single surface level</div>
+    <div class="card">
+      <div>
+        <div class="card-title">Production Summary</div>
+        <div class="card-description">Permian Basin field overview</div>
+      </div>
+      <div class="card-body">Monthly output has increased 12% since the last reporting period. Three wells are flagged for review.</div>
+      <div class="card-footer">
+        <button class="btn btn-outline" type="button">View report</button>
+        <button class="btn btn-primary" type="button">Export data</button>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="slabel">Surface model — border-differentiated · --card distinct from --background in both modes</div>
+    <div class="surface-stack">
+      <div class="surface-chip sbase">--muted<br>oklch(0.94 0 0)</div>
+      <div class="surface-chip scard">--card<br>oklch(0.98 0 0) · dk: oklch(0.24 0 0)</div>
+      <div class="surface-chip smuted">--background<br>oklch(0.95 0 0) · dk: oklch(0.205 0 0)</div>
+    </div>
+  </div>
+
+  <div>
+    <div class="slabel">Primary hover variant · derived from --primary</div>
+    <div class="surface-stack">
+      <div class="surface-chip ppri">--primary<br>oklch(0.544 0.149 138.62)</div>
+      <div class="surface-chip plight">--accent-brand-light<br>hover · oklch(0.637 0.182 139.71)</div>
+    </div>
+  </div>
+
+  <div>
+    <div class="slabel">Type scale — system-ui, no token definitions (set per project)</div>
+    <div class="type-stack">
+      <div class="type-display">Display 36 / 700</div>
+      <div class="type-heading">Heading 24 / 600</div>
+      <div class="type-title">Title 16 / 600</div>
+      <div class="type-body">Body 14 / 400 — the primary reading size for interface text across all components.</div>
+      <div class="type-small">Small 12 / 400 — captions, timestamps, metadata labels</div>
+    </div>
+  </div>
+
+  <div>
+    <div class="icon-head">
+      <div class="slabel">Lucide icons — random sample · lucide-react 0.542.0 · currentColor follows the theme</div>
+      <button class="btn btn-sm btn-outline" id="icon-shuffle" type="button">Shuffle</button>
+    </div>
+    <div class="icon-grid" id="e1-icons"></div>
+    <div class="icon-note">24 icons drawn at random from a pool of 96. Every valid name is in enverus-one/lucide-icons.md.</div>
+  </div>
+
+  <div>
+    <div class="slabel">WCAG 2.1 contrast — live · updates with Light / Dark toggle</div>
+    <div class="contrast-table" id="e1-contrast"></div>
+  </div>
+
+</div>
+
+<script>
+  /* Resolve a CSS custom property to rgb(). getComputedStyle returns OKLCH / color-mix
+     values as-is in modern browsers, so paint the color onto a 1x1 canvas and read
+     the sRGB pixel back instead. Returns null if the value is not a valid color. */
+  var probe = document.createElement('canvas');
+  probe.width = probe.height = 1;
+  var probeCtx = probe.getContext('2d', { willReadFrequently: true });
+  function resolveVar(el, prop) {
+    var raw = getComputedStyle(el).getPropertyValue(prop).trim();
+    var sentinel = '#fe01fd';
+    probeCtx.fillStyle = sentinel;
+    probeCtx.fillStyle = raw;
+    if (probeCtx.fillStyle === sentinel) return null;
+    probeCtx.clearRect(0, 0, 1, 1);
+    probeCtx.fillRect(0, 0, 1, 1);
+    var d = probeCtx.getImageData(0, 0, 1, 1).data;
+    return 'rgba(' + d[0] + ', ' + d[1] + ', ' + d[2] + ', ' + (d[3] / 255) + ')';
+  }
+
+  function parseRgb(str) {
+    var m = str && str.match(/rgba?\(\s*([\d.]+)[\s,]+([\d.]+)[\s,]+([\d.]+)(?:[\s,\/]+([\d.]+))?/);
+    return m ? { r: +m[1] / 255, g: +m[2] / 255, b: +m[3] / 255, a: m[4] === undefined ? 1 : +m[4] } : null;
+  }
+
+  function srgbLin(c) { return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); }
+  function luminance(rgb) { return rgb ? 0.2126 * srgbLin(rgb.r) + 0.7152 * srgbLin(rgb.g) + 0.0722 * srgbLin(rgb.b) : 0; }
+  function contrast(l1, l2) { var hi = Math.max(l1, l2), lo = Math.min(l1, l2); return (hi + 0.05) / (lo + 0.05); }
+  function toHex(rgb) {
+    if (!rgb) return '#808080';
+    function ch(v) { return ('0' + Math.round(v * 255).toString(16)).slice(-2); }
+    return '#' + ch(rgb.r) + ch(rgb.g) + ch(rgb.b);
+  }
+
+  /* Contrast pairs — token names match tokens.css + derived vars defined on .e1 */
+  var PAIRS = [
+    { label: 'Body text / background',      fg: '--foreground',          bg: '--background',  large: false },
+    { label: 'Muted text / background',     fg: '--muted-foreground',    bg: '--background',  large: false },
+    { label: 'Muted text / muted surface',  fg: '--muted-foreground',    bg: '--muted',       large: false },
+    { label: 'Primary button',              fg: '--primary-foreground',  bg: '--primary',     large: false },
+    { label: 'Secondary button',            fg: '--secondary-foreground',bg: '--secondary',   large: false },
+    { label: 'Link on background',          fg: '--link',                bg: '--background',  large: false },
+    { label: 'Success badge',               fg: '--succ-text',           bg: '--succ-muted',  large: true  },
+    { label: 'Warning badge',               fg: '--warn-text',           bg: '--warn-muted',  large: true  },
+    { label: 'Error badge',                 fg: '--dest-text',           bg: '--dest-muted',  large: true  },
+    { label: 'Input border / background (3:1, non-text)', fg: '--input', bg: '--background', large: true },
+    { label: 'Destructive button',          fg: '--destructive-foreground', bg: '--destructive', large: false },
+  ];
+
+  function renderContrast() {
+    var demo  = document.getElementById('e1-demo');
+    var table = document.getElementById('e1-contrast');
+    var html  = '';
+    for (var i = 0; i < PAIRS.length; i++) {
+      var p   = PAIRS[i];
+      var fg  = parseRgb(resolveVar(demo, p.fg));
+      var bg  = parseRgb(resolveVar(demo, p.bg));
+      if (!fg || !bg) continue;
+      /* translucent foregrounds (e.g. dark --input) are judged as composited over the background */
+      if (fg.a < 1) {
+        fg = { r: fg.r * fg.a + bg.r * (1 - fg.a), g: fg.g * fg.a + bg.g * (1 - fg.a), b: fg.b * fg.a + bg.b * (1 - fg.a), a: 1 };
+      }
+      var r   = contrast(luminance(fg), luminance(bg));
+      var aa  = p.large ? 3.0 : 4.5, aaa = p.large ? 4.5 : 7.0;
+      var lg  = p.large ? ' <span class="cr-lg-note">lg</span>' : '';
+      html +=
+        '<div class="cr-row">' +
+          '<div class="cr-swatches"><div class="cr-swatch-bg" style="background:' + toHex(bg) + '"></div><div class="cr-swatch-fg" style="background:' + toHex(fg) + '"></div></div>' +
+          '<div class="cr-label">' + p.label + lg + '</div>' +
+          '<div class="cr-ratio">' + r.toFixed(1) + ':1</div>' +
+          '<div class="cr-badges">' +
+            '<span class="cr-badge ' + (r >= aa  ? 'cr-pass' : 'cr-fail') + '">AA</span>' +
+            '<span class="cr-badge ' + (r >= aaa ? 'cr-pass' : 'cr-fail') + '">AAA</span>' +
+          '</div>' +
+        '</div>';
+    }
+    table.innerHTML = html;
+  }
+
+  /* Lucide icons — pool of 96 icons (24-px grid, stroke 2, currentColor); 24 drawn at random per load / Shuffle */
+  var ICON_POOL = {"workflow":"<rect width=\"8\" height=\"8\" x=\"3\" y=\"3\" rx=\"2\"/><path d=\"M7 11v4a2 2 0 0 0 2 2h4\"/><rect width=\"8\" height=\"8\" x=\"13\" y=\"13\" rx=\"2\"/>","zap":"<path d=\"M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z\"/>","layout-grid":"<rect width=\"7\" height=\"7\" x=\"3\" y=\"3\" rx=\"1\"/><rect width=\"7\" height=\"7\" x=\"14\" y=\"3\" rx=\"1\"/><rect width=\"7\" height=\"7\" x=\"14\" y=\"14\" rx=\"1\"/><rect width=\"7\" height=\"7\" x=\"3\" y=\"14\" rx=\"1\"/>","wand-sparkles":"<path d=\"m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72\"/><path d=\"m14 7 3 3\"/><path d=\"M5 6v4\"/><path d=\"M19 14v4\"/><path d=\"M10 2v2\"/><path d=\"M7 8H3\"/><path d=\"M21 16h-4\"/><path d=\"M11 3H9\"/>","lightbulb":"<path d=\"M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5\"/><path d=\"M9 18h6\"/><path d=\"M10 22h4\"/>","network":"<rect x=\"16\" y=\"16\" width=\"6\" height=\"6\" rx=\"1\"/><rect x=\"2\" y=\"16\" width=\"6\" height=\"6\" rx=\"1\"/><rect x=\"9\" y=\"2\" width=\"6\" height=\"6\" rx=\"1\"/><path d=\"M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3\"/><path d=\"M12 12V8\"/>","library-big":"<rect width=\"8\" height=\"18\" x=\"3\" y=\"3\" rx=\"1\"/><path d=\"M7 3v18\"/><path d=\"M20.4 18.9c.2.5-.1 1.1-.6 1.3l-1.9.7c-.5.2-1.1-.1-1.3-.6L11.1 5.1c-.2-.5.1-1.1.6-1.3l1.9-.7c.5-.2 1.1.1 1.3.6Z\"/>","cable":"<path d=\"M17 19a1 1 0 0 1-1-1v-2a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2a1 1 0 0 1-1 1z\"/><path d=\"M17 21v-2\"/><path d=\"M19 14V6.5a1 1 0 0 0-7 0v11a1 1 0 0 1-7 0V10\"/><path d=\"M21 21v-2\"/><path d=\"M3 5V3\"/><path d=\"M4 10a2 2 0 0 1-2-2V6a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2a2 2 0 0 1-2 2z\"/><path d=\"M7 5V3\"/>","circle-help":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3\"/><path d=\"M12 17h.01\"/>","panel-left":"<rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\"/><path d=\"M9 3v18\"/>","square-terminal":"<path d=\"m7 11 2-2-2-2\"/><path d=\"M11 13h4\"/><rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\" ry=\"2\"/>","iteration-ccw":"<path d=\"m16 14 4 4-4 4\"/><path d=\"M20 10a8 8 0 1 0-8 8h8\"/>","square-arrow-down-left":"<rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\"/><path d=\"m16 8-8 8\"/><path d=\"M16 16H8V8\"/>","receipt-japanese-yen":"<path d=\"M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z\"/><path d=\"m12 10 3-3\"/><path d=\"m9 7 3 3v7.5\"/><path d=\"M9 11h6\"/><path d=\"M9 15h6\"/>","ticket-slash":"<path d=\"M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z\"/><path d=\"m9.5 14.5 5-5\"/>","eye-off":"<path d=\"M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49\"/><path d=\"M14.084 14.158a3 3 0 0 1-4.242-4.242\"/><path d=\"M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143\"/><path d=\"m2 2 20 20\"/>","circle-percent":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"m15 9-6 6\"/><path d=\"M9 9h.01\"/><path d=\"M15 15h.01\"/>","library-square":"<rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\"/><path d=\"M7 7v10\"/><path d=\"M11 7v10\"/><path d=\"m15 7 2 10\"/>","arrow-up-right-from-circle":"<path d=\"M22 12A10 10 0 1 1 12 2\"/><path d=\"M22 2 12 12\"/><path d=\"M16 2h6v6\"/>","receipt-euro":"<path d=\"M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z\"/><path d=\"M8 12h5\"/><path d=\"M16 9.5a4 4 0 1 0 0 5.2\"/>","user-plus-2":"<path d=\"M2 21a8 8 0 0 1 13.292-6\"/><circle cx=\"10\" cy=\"8\" r=\"5\"/><path d=\"M19 16v6\"/><path d=\"M22 19h-6\"/>","table-cells-merge":"<path d=\"M12 21v-6\"/><path d=\"M12 9V3\"/><path d=\"M3 15h18\"/><path d=\"M3 9h18\"/><rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\"/>","loader-2":"<path d=\"M21 12a9 9 0 1 1-6.219-8.56\"/>","baggage-claim":"<path d=\"M22 18H6a2 2 0 0 1-2-2V7a2 2 0 0 0-2-2\"/><path d=\"M17 14V4a2 2 0 0 0-2-2h-1a2 2 0 0 0-2 2v10\"/><rect width=\"13\" height=\"8\" x=\"8\" y=\"6\" rx=\"1\"/><circle cx=\"18\" cy=\"20\" r=\"2\"/><circle cx=\"9\" cy=\"20\" r=\"2\"/>","calendar-arrow-up":"<path d=\"m14 18 4-4 4 4\"/><path d=\"M16 2v4\"/><path d=\"M18 22v-8\"/><path d=\"M21 11.343V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h9\"/><path d=\"M3 10h18\"/><path d=\"M8 2v4\"/>","arrow-big-down":"<path d=\"M15 11a1 1 0 0 0 1 1h2.939a1 1 0 0 1 .75 1.811l-6.835 6.836a1.207 1.207 0 0 1-1.707 0L4.31 13.81a1 1 0 0 1 .75-1.811H8a1 1 0 0 0 1-1V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1z\"/>","file-bar-chart-2":"<path d=\"M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z\"/><path d=\"M14 2v4a2 2 0 0 0 2 2h4\"/><path d=\"M8 18v-1\"/><path d=\"M12 18v-6\"/><path d=\"M16 18v-3\"/>","mail-x":"<path d=\"M22 13V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v12c0 1.1.9 2 2 2h9\"/><path d=\"m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7\"/><path d=\"m17 17 4 4\"/><path d=\"m21 17-4 4\"/>","circle-chevron-down":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"m16 10-4 4-4-4\"/>","arrow-up-za":"<path d=\"m3 8 4-4 4 4\"/><path d=\"M7 4v16\"/><path d=\"M15 4h5l-5 6h5\"/><path d=\"M15 20v-3.5a2.5 2.5 0 0 1 5 0V20\"/><path d=\"M20 18h-5\"/>","cloudy":"<path d=\"M17.5 21H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z\"/><path d=\"M22 10a3 3 0 0 0-3-3h-2.207a5.502 5.502 0 0 0-10.702.5\"/>","hard-drive-upload":"<path d=\"m16 6-4-4-4 4\"/><path d=\"M12 2v8\"/><rect width=\"20\" height=\"8\" x=\"2\" y=\"14\" rx=\"2\"/><path d=\"M6 18h.01\"/><path d=\"M10 18h.01\"/>","baseline":"<path d=\"M4 20h16\"/><path d=\"m6 16 6-12 6 12\"/><path d=\"M8 12h8\"/>","mouse-pointer-2":"<path d=\"M4.037 4.688a.495.495 0 0 1 .651-.651l16 6.5a.5.5 0 0 1-.063.947l-6.124 1.58a2 2 0 0 0-1.438 1.435l-1.579 6.126a.5.5 0 0 1-.947.063z\"/>","clipboard-clock":"<path d=\"M16 14v2.2l1.6 1\"/><path d=\"M16 4h2a2 2 0 0 1 2 2v.832\"/><path d=\"M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h2\"/><circle cx=\"16\" cy=\"16\" r=\"6\"/><rect x=\"8\" y=\"2\" width=\"8\" height=\"4\" rx=\"1\"/>","play-square":"<rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\"/><path d=\"M9 9.003a1 1 0 0 1 1.517-.859l4.997 2.997a1 1 0 0 1 0 1.718l-4.997 2.997A1 1 0 0 1 9 14.996z\"/>","rotate-ccw-square":"<path d=\"M20 9V7a2 2 0 0 0-2-2h-6\"/><path d=\"m15 2-3 3 3 3\"/><path d=\"M20 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h2\"/>","message-circle-question":"<path d=\"M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719\"/><path d=\"M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3\"/><path d=\"M12 17h.01\"/>","circle-plus":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M8 12h8\"/><path d=\"M12 8v8\"/>","calendar-plus":"<path d=\"M16 19h6\"/><path d=\"M16 2v4\"/><path d=\"M19 16v6\"/><path d=\"M21 12.598V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8.5\"/><path d=\"M3 10h18\"/><path d=\"M8 2v4\"/>","arrow-left-to-line":"<path d=\"M3 19V5\"/><path d=\"m13 6-6 6 6 6\"/><path d=\"M7 12h14\"/>","arrow-down-az":"<path d=\"m3 16 4 4 4-4\"/><path d=\"M7 20V4\"/><path d=\"M20 8h-5\"/><path d=\"M15 10V6.5a2.5 2.5 0 0 1 5 0V10\"/><path d=\"M15 14h5l-5 6h5\"/>","candy":"<path d=\"M10 7v10.9\"/><path d=\"M14 6.1V17\"/><path d=\"M16 7V3a1 1 0 0 1 1.707-.707 2.5 2.5 0 0 0 2.152.717 1 1 0 0 1 1.131 1.131 2.5 2.5 0 0 0 .717 2.152A1 1 0 0 1 21 8h-4\"/><path d=\"M16.536 7.465a5 5 0 0 0-7.072 0l-2 2a5 5 0 0 0 0 7.07 5 5 0 0 0 7.072 0l2-2a5 5 0 0 0 0-7.07\"/><path d=\"M8 17v4a1 1 0 0 1-1.707.707 2.5 2.5 0 0 0-2.152-.717 1 1 0 0 1-1.131-1.131 2.5 2.5 0 0 0-.717-2.152A1 1 0 0 1 3 16h4\"/>","book":"<path d=\"M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20\"/>","spotlight":"<path d=\"M15.295 19.562 16 22\"/><path d=\"m17 16 3.758 2.098\"/><path d=\"m19 12.5 3.026-.598\"/><path d=\"M7.61 6.3a3 3 0 0 0-3.92 1.3l-1.38 2.79a3 3 0 0 0 1.3 3.91l6.89 3.597a1 1 0 0 0 1.342-.447l3.106-6.211a1 1 0 0 0-.447-1.341z\"/><path d=\"M8 9V2\"/>","square-arrow-up-left":"<rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\"/><path d=\"M8 16V8h8\"/><path d=\"M16 16 8 8\"/>","corner-up-left":"<path d=\"M20 20v-7a4 4 0 0 0-4-4H4\"/><path d=\"M9 14 4 9l5-5\"/>","keyboard-music":"<rect width=\"20\" height=\"16\" x=\"2\" y=\"4\" rx=\"2\"/><path d=\"M6 8h4\"/><path d=\"M14 8h.01\"/><path d=\"M18 8h.01\"/><path d=\"M2 12h20\"/><path d=\"M6 12v4\"/><path d=\"M10 12v4\"/><path d=\"M14 12v4\"/><path d=\"M18 12v4\"/>","glasses":"<circle cx=\"6\" cy=\"15\" r=\"4\"/><circle cx=\"18\" cy=\"15\" r=\"4\"/><path d=\"M14 15a2 2 0 0 0-2-2 2 2 0 0 0-2 2\"/><path d=\"M2.5 13 5 7c.7-1.3 1.4-2 3-2\"/><path d=\"M21.5 13 19 7c-.7-1.3-1.5-2-3-2\"/>","curly-braces":"<path d=\"M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5c0 1.1.9 2 2 2h1\"/><path d=\"M16 21h1a2 2 0 0 0 2-2v-5c0-1.1.9-2 2-2a2 2 0 0 1-2-2V5a2 2 0 0 0-2-2h-1\"/>","squircle":"<path d=\"M12 3c7.2 0 9 1.8 9 9s-1.8 9-9 9-9-1.8-9-9 1.8-9 9-9\"/>","sun":"<circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M12 2v2\"/><path d=\"M12 20v2\"/><path d=\"m4.93 4.93 1.41 1.41\"/><path d=\"m17.66 17.66 1.41 1.41\"/><path d=\"M2 12h2\"/><path d=\"M20 12h2\"/><path d=\"m6.34 17.66-1.41 1.41\"/><path d=\"m19.07 4.93-1.41 1.41\"/>","circle-dollar-sign":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8\"/><path d=\"M12 18V6\"/>","stamp":"<path d=\"M14 13V8.5C14 7 15 7 15 5a3 3 0 0 0-6 0c0 2 1 2 1 3.5V13\"/><path d=\"M20 15.5a2.5 2.5 0 0 0-2.5-2.5h-11A2.5 2.5 0 0 0 4 15.5V17a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1z\"/><path d=\"M5 22h14\"/>","scan-heart":"<path d=\"M17 3h2a2 2 0 0 1 2 2v2\"/><path d=\"M21 17v2a2 2 0 0 1-2 2h-2\"/><path d=\"M3 7V5a2 2 0 0 1 2-2h2\"/><path d=\"M7 21H5a2 2 0 0 1-2-2v-2\"/><path d=\"M7.828 13.07A3 3 0 0 1 12 8.764a3 3 0 0 1 4.172 4.306l-3.447 3.62a1 1 0 0 1-1.449 0z\"/>","house-plug":"<path d=\"M10 12V8.964\"/><path d=\"M14 12V8.964\"/><path d=\"M15 12a1 1 0 0 1 1 1v2a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-2a1 1 0 0 1 1-1z\"/><path d=\"M8.5 21H5a2 2 0 0 1-2-2v-9a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2h-5a2 2 0 0 1-2-2v-2\"/>","shopping-cart":"<circle cx=\"8\" cy=\"21\" r=\"1\"/><circle cx=\"19\" cy=\"21\" r=\"1\"/><path d=\"M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12\"/>","slice":"<path d=\"M11 16.586V19a1 1 0 0 1-1 1H2L18.37 3.63a1 1 0 1 1 3 3l-9.663 9.663a1 1 0 0 1-1.414 0L8 14\"/>","bath":"<path d=\"M10 4 8 6\"/><path d=\"M17 19v2\"/><path d=\"M2 12h20\"/><path d=\"M7 19v2\"/><path d=\"M9 5 7.621 3.621A2.121 2.121 0 0 0 4 5v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5\"/>","file-audio":"<path d=\"M17.5 22h.5a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v3\"/><path d=\"M14 2v4a2 2 0 0 0 2 2h4\"/><path d=\"M2 19a2 2 0 1 1 4 0v1a2 2 0 1 1-4 0v-4a6 6 0 0 1 12 0v4a2 2 0 1 1-4 0v-1a2 2 0 1 1 4 0\"/>","table-of-contents":"<path d=\"M16 12H3\"/><path d=\"M16 18H3\"/><path d=\"M16 6H3\"/><path d=\"M21 12h.01\"/><path d=\"M21 18h.01\"/><path d=\"M21 6h.01\"/>","volume-off":"<path d=\"M16 9a5 5 0 0 1 .95 2.293\"/><path d=\"M19.364 5.636a9 9 0 0 1 1.889 9.96\"/><path d=\"m2 2 20 20\"/><path d=\"m7 7-.587.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298V11\"/><path d=\"M9.828 4.172A.686.686 0 0 1 11 4.657v.686\"/>","sword":"<polyline points=\"14.5 17.5 3 6 3 3 6 3 17.5 14.5\"/><line x1=\"13\" x2=\"19\" y1=\"19\" y2=\"13\"/><line x1=\"16\" x2=\"20\" y1=\"16\" y2=\"20\"/><line x1=\"19\" x2=\"21\" y1=\"21\" y2=\"19\"/>","circle-chevron-right":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"m10 8 4 4-4 4\"/>","battery-medium":"<path d=\"M10 14v-4\"/><path d=\"M22 14v-4\"/><path d=\"M6 14v-4\"/><rect x=\"2\" y=\"6\" width=\"16\" height=\"12\" rx=\"2\"/>","package-check":"<path d=\"m16 16 2 2 4-4\"/><path d=\"M21 10V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l2-1.14\"/><path d=\"m7.5 4.27 9 5.15\"/><polyline points=\"3.29 7 12 12 20.71 7\"/><line x1=\"12\" x2=\"12\" y1=\"22\" y2=\"12\"/>","package-x":"<path d=\"M21 10V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l2-1.14\"/><path d=\"m7.5 4.27 9 5.15\"/><polyline points=\"3.29 7 12 12 20.71 7\"/><line x1=\"12\" x2=\"12\" y1=\"22\" y2=\"12\"/><path d=\"m17 13 5 5m-5 0 5-5\"/>","arrow-left-right":"<path d=\"M8 3 4 7l4 4\"/><path d=\"M4 7h16\"/><path d=\"m16 21 4-4-4-4\"/><path d=\"M20 17H4\"/>","mail-plus":"<path d=\"M22 13V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v12c0 1.1.9 2 2 2h8\"/><path d=\"m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7\"/><path d=\"M19 16v6\"/><path d=\"M16 19h6\"/>","circle-dot":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><circle cx=\"12\" cy=\"12\" r=\"1\"/>","inspect":"<path d=\"M12.034 12.681a.498.498 0 0 1 .647-.647l9 3.5a.5.5 0 0 1-.033.943l-3.444 1.068a1 1 0 0 0-.66.66l-1.067 3.443a.5.5 0 0 1-.943.033z\"/><path d=\"M21 11V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h6\"/>","circle-slash":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><line x1=\"9\" x2=\"15\" y1=\"15\" y2=\"9\"/>","file-axis-3d":"<path d=\"M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z\"/><path d=\"M14 2v4a2 2 0 0 0 2 2h4\"/><path d=\"m8 18 4-4\"/><path d=\"M8 10v8h8\"/>","chart-bar-increasing":"<path d=\"M3 3v16a2 2 0 0 0 2 2h16\"/><path d=\"M7 11h8\"/><path d=\"M7 16h12\"/><path d=\"M7 6h3\"/>","expand":"<path d=\"m15 15 6 6\"/><path d=\"m15 9 6-6\"/><path d=\"M21 16v5h-5\"/><path d=\"M21 8V3h-5\"/><path d=\"M3 16v5h5\"/><path d=\"m3 21 6-6\"/><path d=\"M3 8V3h5\"/><path d=\"M9 9 3 3\"/>","navigation-off":"<path d=\"M8.43 8.43 3 11l8 2 2 8 2.57-5.43\"/><path d=\"M17.39 11.73 22 2l-9.73 4.61\"/><line x1=\"2\" x2=\"22\" y1=\"2\" y2=\"22\"/>","pause-circle":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><line x1=\"10\" x2=\"10\" y1=\"15\" y2=\"9\"/><line x1=\"14\" x2=\"14\" y1=\"15\" y2=\"9\"/>","briefcase-conveyor-belt":"<path d=\"M10 20v2\"/><path d=\"M14 20v2\"/><path d=\"M18 20v2\"/><path d=\"M21 20H3\"/><path d=\"M6 20v2\"/><path d=\"M8 16V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v12\"/><rect x=\"4\" y=\"6\" width=\"16\" height=\"10\" rx=\"2\"/>","arrow-down-up":"<path d=\"m3 16 4 4 4-4\"/><path d=\"M7 20V4\"/><path d=\"m21 8-4-4-4 4\"/><path d=\"M17 4v16\"/>","folder-archive":"<circle cx=\"15\" cy=\"19\" r=\"2\"/><path d=\"M20.9 19.8A2 2 0 0 0 22 18V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h5.1\"/><path d=\"M15 11v-1\"/><path d=\"M15 17v-2\"/>","bean":"<path d=\"M10.165 6.598C9.954 7.478 9.64 8.36 9 9c-.64.64-1.521.954-2.402 1.165A6 6 0 0 0 8 22c7.732 0 14-6.268 14-14a6 6 0 0 0-11.835-1.402Z\"/><path d=\"M5.341 10.62a4 4 0 1 0 5.279-5.28\"/>","chevrons-left":"<path d=\"m11 17-5-5 5-5\"/><path d=\"m18 17-5-5 5-5\"/>","sandwich":"<path d=\"m2.37 11.223 8.372-6.777a2 2 0 0 1 2.516 0l8.371 6.777\"/><path d=\"M21 15a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-5.25\"/><path d=\"M3 15a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h9\"/><path d=\"m6.67 15 6.13 4.6a2 2 0 0 0 2.8-.4l3.15-4.2\"/><rect width=\"20\" height=\"4\" x=\"2\" y=\"11\" rx=\"1\"/>","battery-full":"<path d=\"M10 10v4\"/><path d=\"M14 10v4\"/><path d=\"M22 14v-4\"/><path d=\"M6 10v4\"/><rect x=\"2\" y=\"6\" width=\"16\" height=\"12\" rx=\"2\"/>","gift":"<rect x=\"3\" y=\"8\" width=\"18\" height=\"4\" rx=\"1\"/><path d=\"M12 8v13\"/><path d=\"M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7\"/><path d=\"M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5\"/>","scroll-text":"<path d=\"M15 12h-5\"/><path d=\"M15 8h-5\"/><path d=\"M19 17V5a2 2 0 0 0-2-2H4\"/><path d=\"M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3\"/>","chevrons-down-up":"<path d=\"m7 20 5-5 5 5\"/><path d=\"m7 4 5 5 5-5\"/>","alarm-clock-plus":"<circle cx=\"12\" cy=\"13\" r=\"8\"/><path d=\"M5 3 2 6\"/><path d=\"m22 6-3-3\"/><path d=\"M6.38 18.7 4 21\"/><path d=\"M17.64 18.67 20 21\"/><path d=\"M12 10v6\"/><path d=\"M9 13h6\"/>","monitor-x":"<path d=\"m14.5 12.5-5-5\"/><path d=\"m9.5 12.5 5-5\"/><rect width=\"20\" height=\"14\" x=\"2\" y=\"3\" rx=\"2\"/><path d=\"M12 17v4\"/><path d=\"M8 21h8\"/>","signal-low":"<path d=\"M2 20h.01\"/><path d=\"M7 20v-4\"/>","git-merge":"<circle cx=\"18\" cy=\"18\" r=\"3\"/><circle cx=\"6\" cy=\"6\" r=\"3\"/><path d=\"M6 21V9a9 9 0 0 0 9 9\"/>","wrap-text":"<path d=\"m16 16-2 2 2 2\"/><path d=\"M3 12h15a3 3 0 1 1 0 6h-4\"/><path d=\"M3 18h7\"/><path d=\"M3 6h18\"/>","mic-vocal":"<path d=\"m11 7.601-5.994 8.19a1 1 0 0 0 .1 1.298l.817.818a1 1 0 0 0 1.314.087L15.09 12\"/><path d=\"M16.5 21.174C15.5 20.5 14.372 20 13 20c-2.058 0-3.928 2.356-6 2-2.072-.356-2.775-3.369-1.5-4.5\"/><circle cx=\"16\" cy=\"7\" r=\"5\"/>","popsicle":"<path d=\"M18.6 14.4c.8-.8.8-2 0-2.8l-8.1-8.1a4.95 4.95 0 1 0-7.1 7.1l8.1 8.1c.9.7 2.1.7 2.9-.1Z\"/><path d=\"m22 22-5.5-5.5\"/>","mail":"<path d=\"m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7\"/><rect x=\"2\" y=\"4\" width=\"20\" height=\"16\" rx=\"2\"/>","person-standing":"<circle cx=\"12\" cy=\"5\" r=\"1\"/><path d=\"m9 20 3-6 3 6\"/><path d=\"m6 8 6 2 6-2\"/><path d=\"M12 10v4\"/>"};
+
+  function renderIcons() {
+    var names = Object.keys(ICON_POOL);
+    for (var i = names.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = names[i]; names[i] = names[j]; names[j] = t;
+    }
+    var html = '';
+    names.slice(0, 24).forEach(function (n) {
+      html +=
+        '<div class="icon-cell">' +
+          '<svg viewBox="0 0 24 24" aria-hidden="true">' + ICON_POOL[n] + '</svg>' +
+          '<span class="icon-name">' + n + '</span>' +
+        '</div>';
+    });
+    document.getElementById('e1-icons').innerHTML = html;
+  }
+  document.getElementById('icon-shuffle').addEventListener('click', renderIcons);
+
+  function setMode(mode) {
+    document.documentElement.classList.toggle('dark-theme', mode === 'dark');
+    document.getElementById('btn-dark').classList.toggle('active', mode === 'dark');
+    document.getElementById('btn-light').classList.toggle('active', mode === 'light');
+    renderContrast();
+  }
+
+  renderContrast();
+  renderIcons();
+</script>

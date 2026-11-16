@@ -1,0 +1,150 @@
+{
+  "skill_name": "enverus-ux-design-skill",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Audit this UI for WCAG and heuristic issues. The screen shows a data table with 8 columns. Column headers are light grey text on a white background. There are no row hover states. Error messages appear only as a red border on invalid form fields with no text explanation. The delete button triggers immediately with no confirmation dialog.",
+      "expected_output": "A severity-ranked findings list mapping each issue to a specific WCAG criterion or Nielsen heuristic, followed by a prioritized action list.",
+      "assertions": [
+        "Reports the grey-on-white column headers as a contrast failure and cites WCAG 1.4.3",
+        "Flags the missing error text as a WCAG 1.4.1 violation (color as sole differentiator) and maps it to Heuristic 9",
+        "Flags the immediate delete action as a Heuristic 5 violation (error prevention) and recommends a confirmation dialog",
+        "Assigns severity levels (Critical, High, Medium, or Low) to each finding",
+        "Closes with a prioritized action list"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Build the page header for an Enverus One asset detail page titled 'Bakken Basin Acreage Blocks' with the subtitle 'Spatial · Enverus DI · Updated Sep 1 · Enverus'. The user arrived from the Library and needs a way to go back. Include a secondary 'Share' action and a primary 'Add to project' action.",
+      "expected_output": "A page header using the standard Enverus One structure, with the optional back button shown because this is a secondary page.",
+      "assertions": [
+        "Wraps the header in an outer container with id=\"page-header\" and classes flex flex-col flex-shrink-0 overflow-hidden, whose children are the optional back-button row and the page-titles row",
+        "Renders the back button in its own div id=\"back-button\" (flex-shrink-0 px-6 pt-4) above the #page-titles row, not inside #page-actions",
+        "Back button uses the outline variant at small size (h-8) with a leading chevron-left icon and the label 'Back to Library'",
+        "Renders the title row as id=\"page-titles\" with classes flex-shrink-0 px-6 py-4 flex items-start justify-between",
+        "Renders the title as a single h1 (text-2xl font-semibold text-foreground) inside a div id=\"page-title\" with classes flex items-center gap-2",
+        "Renders the subtitle as a p id=\"page-subtitle\" with classes text-sm text-muted-foreground mt-0.5, directly below the title",
+        "Groups the actions in a div id=\"page-actions\" with classes flex items-center gap-2 ml-4 flex-shrink-0, right-aligned inside #page-titles, with the secondary action (Share) before (left of) the single primary action (Add to project)",
+        "Supports light and dark themes: all colours come from semantic tokens defined for both :root and .dark-theme, with no hardcoded colours, so it renders correctly when .dark-theme is toggled on the root",
+        "Sets font-size: 14px on the html element (not body or a wrapper) and re-bases Tailwind's scale in px in the global CSS (--spacing: 4px, px --text-* sizes, --radius: 10px), so e.g. h-9 renders at 36px and text-sm at 14px",
+        "Sets color-scheme with the theme in the global CSS (color-scheme: light on :root and color-scheme: dark on .dark-theme, on the html element, not body), so scrollbars are not white in dark mode"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Build an Enverus One list page for 'Flows' in React with a title, a one-line description, a primary 'New Flow' action, and a tabbed interface with tabs for 'Flows', 'My Runs', and 'Runs Shared with Me'. ",
+      "expected_output": "A page containing the Enverus One top navbar fixed at the top of the page, the sidebar, the standard page header (no back button, primary action only) and a tabbed interface below it containing tabular lists of flows, runs, and runs shared with me.",
+      "assertions": [
+        "Wraps the header in an outer container with id=\"page-header\" and classes flex flex-col flex-shrink-0 overflow-hidden, whose children are the optional back-button row and the page-titles row",
+        "Does not render a back button (div id=\"back-button\"), because this is a top-level page",
+        "Renders the title row as id=\"page-titles\" with classes flex-shrink-0 px-6 py-4 flex items-start justify-between",
+        "Renders the title as a single h1 (text-2xl font-semibold text-foreground) inside a div id=\"page-title\" with classes flex items-center gap-2",
+        "Renders the subtitle as a p id=\"page-subtitle\" with classes text-sm text-muted-foreground mt-0.5, directly below the title",
+        "Groups the actions in a div id=\"page-actions\" with classes flex items-center gap-2 ml-4 flex-shrink-0, right-aligned inside #page-titles, containing a single primary 'New Flow' action and no secondary action",
+        "Renders the tabbed interface inside a div id=\"page-body\" with classes flex flex-col flex-1 overflow-hidden that is a sibling of #page-header, placed after it, not inside the header",
+        "Uses semantic tokens only, with no hardcoded colours",
+        "Includes the primary navigation sidebar to the left of the page header and page body, built to the Enverus One sidebar spec and collapsible to an icon-only rail",
+        "Includes the Enverus One top navbar (supplied wordmark, theme toggle and avatar, built to the navbar spec) fixed at the top of the page, e.g. sticky or fixed with top-0, so it stays in view when the page content scrolls and is not inside the scrolling content area",
+        "Positions the sidebar below the navbar, starting 42px from the top of the page (e.g. top-[42px] with a height of calc(100svh - 42px)), so the navbar spans the full width above it",
+        "Lays the page out as a viewport-height flex column: the navbar first, full width above the sidebar row (inside the sidebar provider), then the sidebar and an inset content area side by side, with #page-header and #page-body as siblings in that content area and the body owning the scrolling",
+        "Supports light and dark themes: all colours come from semantic tokens defined for both :root and .dark-theme, with no hardcoded colours (the logo's brand greens excepted), so it renders correctly when .dark-theme is toggled on the root; the sidebar and top navbar use bg-sidebar and border-sidebar-border, with no CLI-added --sidebar* overrides",
+        "Sets font-size: 14px on the html element (not body or a wrapper) and re-bases Tailwind's scale in px in the global CSS (--spacing: 4px, px --text-* sizes, --radius: 10px), so e.g. h-9 renders at 36px and text-sm at 14px; fixed shell measurements (42px navbar, 264px / 48px sidebar) are in px, not rem",
+        "Sets color-scheme with the theme in the global CSS (color-scheme: light on :root and color-scheme: dark on .dark-theme, on the html element, not body), so scrollbars are not white in dark mode"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Build the primary navigation sidebar for an Enverus One page in React. It should list Vera, Flows, Agents, Applications, Skills, Concepts, Spaces, Library and Connections, with Help & Support at the bottom. Vera is the current page, and Spaces is not available yet.",
+      "expected_output": "A collapsible Enverus One sidebar built from shadcn Sidebar components with Lucide icons and Enverus One tokens, matching the expanded (264px) and collapsed icon-only (48px) variants.",
+      "assertions": [
+        "Builds the sidebar from the shadcn Sidebar, SidebarMenu, SidebarMenuItem and SidebarMenuButton components rather than hand-rolled markup",
+        "Makes the sidebar collapsible to a 48px icon-only rail that hides labels and the badge but keeps every item's icon",
+        "Gives every item a Lucide icon (e.g. Workflow for Flows, Zap for Agents, LayoutGrid for Applications, WandSparkles for Skills, Lightbulb for Concepts, Network for Spaces, LibraryBig for Library, Cable for Connections, CircleQuestionMark for Help & Support)",
+        "Marks Vera as the single active item with the sidebar-accent background and medium font weight, with no left bar or color change",
+        "Shows a plain-text 'Coming Soon' badge (12px medium, no pill background or border) on the Spaces item",
+        "Pins Help & Support to the bottom of the sidebar as a footer item with no separator above it",
+        "Uses menu-button rows 32px tall with 8px padding and 8px radius, 14px labels, and sidebar tokens (sidebar, sidebar-border, sidebar-accent, sidebar-foreground) rather than hardcoded hex values",
+        "Uses a PanelLeft icon as the collapse/expand control",
+        "Shows a tooltip with the item's label on every item in the collapsed icon-only rail (including Help & Support), e.g. via the tooltip prop on SidebarMenuButton",
+        "Makes the Spaces item non-clickable: no navigation or click handler, announced as unavailable (e.g. aria-disabled), while still showing the 'Coming Soon' badge",
+        "Renders the Vera item with the supplied Enverus 'E' logo mark SVG (viewBox 0 0 120 97, currentColor letterform plus #A0EF6E and #56BC2F bars) rather than a Lucide icon or a redrawn placeholder and colors the letterform with text-foreground (the --foreground variable) on the SVG",
+        "Offsets the sidebar below the 42px top navbar, starting 42px from the top of the page (e.g. top-[42px] with a height of calc(100svh - 42px)), rather than running the full page height",
+        "Supports light and dark themes: all colours come from semantic tokens defined for both :root and .dark-theme, with no hardcoded colours (the logo's brand greens excepted), so it renders correctly when .dark-theme is toggled on the root; the sidebar and top navbar use bg-sidebar and border-sidebar-border, with no CLI-added --sidebar* overrides",
+        "Sets font-size: 14px on the html element (not body or a wrapper) and re-bases Tailwind's scale in px in the global CSS (--spacing: 4px, px --text-* sizes, --radius: 10px), so e.g. h-9 renders at 36px and text-sm at 14px",
+        "Sets color-scheme with the theme in the global CSS (color-scheme: light on :root and color-scheme: dark on .dark-theme, on the html element, not body), so scrollbars are not white in dark mode"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "I'm building an Enverus One toolbar in React with four icon buttons: Search, Settings, Share and Delete. Which icons should I use and how should I import them?",
+      "expected_output": "Guidance that Enverus One uses the Lucide icon library, with Lucide icon imports from lucide-react and accessible icon-only buttons.",
+      "assertions": [
+        "States that Enverus One uses the Lucide icon library",
+        "Imports the icons from lucide-react rather than another icon set (e.g. Tabler, Heroicons, Font Awesome)",
+        "Maps the four actions to matching Lucide icons (e.g. Search, Settings, Share or Share2, Trash2 or Trash)",
+        "Does not hand-draw or inline custom SVGs for these UI icons",
+        "Gives each icon-only button an aria-label",
+        "Does not add sizing classes (e.g. size-4) to icons inside shadcn components such as Button",
+        "Does not use the data-icon attribute on icons and does not set width/height, 1em or stroke-width on them, because Enverus One's Button sizes icons itself"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Using the Enverus UX design skill, build a React toolbar for an Enverus One asset map view. It needs icon buttons for: zoom in, zoom out, fit to screen, layer toggle, draw polygon, measure distance, filter, download as CSV, print, bookmark, and \"ask Vera\". Also add a status row with icons for: well, pipeline, drilling rig, and refinery. Give me the exact icon import for each one, and tell me if any of these has no good Lucide match.",
+      "expected_output": "A toolbar built with valid lucide-react icon names only, with honest reporting of the controls that have no good Lucide match (well, drilling rig, and a weak match for pipeline) instead of invented icon names or hand-drawn SVGs. The \"Ask Vera\" button may use the supplied Enverus logo mark.",
+      "assertions": [
+        "Imports every icon from lucide-react, with no other icon set; the one exception is the \"Ask Vera\" button, which may use the inlined Enverus logo mark (EnverusLogoMark, from sidebar.md) instead of a Lucide icon",
+        "Uses only icon names that exist in lucide-react (checked against references/enverus-one/lucide-icons.md); no invented names such as ZoomPlus, Polygon or Gear",
+        "Maps the common controls to matching Lucide icons (e.g. ZoomIn, ZoomOut, Maximize, Layers, Ruler, Funnel or Filter, Download, Printer, Bookmark, and Sparkles or the Enverus logo mark for Ask Vera)",
+        "Gives an exact import for every one of the 15 requested controls; \"Ask Vera\" may instead use the inlined Enverus logo mark (EnverusLogoMark) taken from sidebar.md",
+        "States that Lucide has no good match for a well and for a drilling rig, rather than presenting a stand-in as a real match",
+        "Does not hand-draw or inline custom SVGs (the supplied Enverus logo mark for \"Ask Vera\" is allowed), and suggests a custom Enverus icon or design request for the gaps",
+        "Gives every icon-only button an aria-label",
+        "Does not add sizing classes (e.g. size-4) to Lucide icons inside shadcn components such as Button (the Enverus logo mark is sized per sidebar.md)",
+        "Supports light and dark themes: all colours come from semantic tokens defined for both :root and .dark-theme, with no hardcoded colours (the logo's brand greens excepted), so it renders correctly when .dark-theme is toggled on the root",
+        "Sets font-size: 14px on the html element (not body or a wrapper) and re-bases Tailwind's scale in px in the global CSS (--spacing: 4px, px --text-* sizes, --radius: 10px), so e.g. h-9 renders at 36px and text-sm at 14px",
+        "Sets color-scheme with the theme in the global CSS (color-scheme: light on :root and color-scheme: dark on .dark-theme, on the html element, not body), so scrollbars are not white in dark mode"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Build the top navbar for an Enverus One page in React. It should show the Enverus ONE wordmark at the left, and at the right a light/dark theme toggle and the signed-in user's avatar with the initials 'JS'. The page is currently in dark mode.",
+      "expected_output": "A 42px top navbar built from shadcn Button and Avatar components with the supplied Enverus ONE wordmark inlined as an SVG, a Lucide Sun/Moon theme toggle, and Enverus One sidebar tokens.",
+      "assertions": [
+        "Builds the controls from the shadcn Button and Avatar components imported from @/components/ui/*, with icons from lucide-react",
+        "Renders the bar as a full-width 42px-tall flex row (h-[42px], items-center, justify-between) with the --sidebar variable as its background (bg-sidebar) and a bottom-only 1px border in the --sidebar-border variable (border-sidebar-border), not bg-background, border-border or a hex value",
+        "Renders the Enverus ONE wordmark from the supplied assets/enverus-one-wordmark.svg (146.276 x 14, viewBox 0 0 146.276 14) rather than redrawing it or using text",
+        "Inlines the wordmark SVG with the lettering and divider as currentColor and the green bars fixed at #A0EF6E and #56BC2F; does not use an <img> or CSS background for it; sets text-foreground (the --foreground variable) on the SVG so the lettering follows --foreground",
+        "Renders the theme toggle as a 32px icon Button (variant secondary, size icon) with a Lucide Sun or Moon icon (Sun while the theme is dark) and an aria-label that names the action",
+        "Renders the avatar as a 32px circle with the initials JS on the primary green (bg-primary text-primary-foreground)",
+        "Places the controls in a right-hand group with a 16px gap and 16px right padding, and adds no navigation links or search input",
+        "Uses semantic tokens only, with hex values limited to the wordmark's green bars",
+        "Fixes the navbar at the top of the page (e.g. sticky or fixed with top-0 and a z-index above the page content) so it stays in view when the page scrolls",
+        "Supports light and dark themes: all colours come from semantic tokens defined for both :root and .dark-theme, with no hardcoded colours (the logo's brand greens excepted), so it renders correctly when .dark-theme is toggled on the root; the toggle actually switches the .dark-theme class",
+        "Sets font-size: 14px on the html element (not body or a wrapper) and re-bases Tailwind's scale in px in the global CSS (--spacing: 4px, px --text-* sizes, --radius: 10px), so e.g. h-9 renders at 36px and text-sm at 14px",
+        "Sets color-scheme with the theme in the global CSS (color-scheme: light on :root and color-scheme: dark on .dark-theme, on the html element, not body), so scrollbars are not white in dark mode"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Build an Enverus One list page that shows a list of 'Spaces' in React. It needs a title, a one-line description, and a primary 'New Space' action shown in the page the header, list the spaces in a table with columns for Name, Type, Goal and Members, and let users switch to a card view of the same spaces. Users should be able to search the spaces, filter them between All, Mine and Shared with me, choose which columns are shown, sort the cards, and page through the results. Each space also needs its own actions menu.",
+      "expected_output": "A full Enverus One page (navbar, sidebar, standard page header with primary action only) with a list body in the page body: a toolbar with search and an All/Mine/Shared with me filter on the left and a Columns button (table) or Sort by dropdown (cards) plus a List/Cards toggle on the right, a table with a fixed actions column, a card grid, and pagination with a 'Records per page' selector and page buttons pinned below.",
+      "assertions": [
+        "Includes the Enverus One top navbar fixed at the top (sticky or fixed, top-0), the sidebar below it starting 42px from the top, and a standard page header (id=\"page-header\", no back button, a single primary 'New Space' action) as a sibling before #page-body",
+        "Renders the list inside #page-body as a flex column that fills the parent (e.g. flex h-full min-h-0 flex-col) with three stacked parts: toolbar, table/card region, pagination",
+        "Makes only the table/card region scroll (flex-1 min-h-0 overflow-y-auto or equivalent), with the toolbar and pagination shrink-0 siblings outside the scroll region so the pagination is always visible at the bottom of the parent",
+        "Puts the search input first on the left of the toolbar, followed by the All / Mine / Shared with me filter as a single-select segmented control (ToggleGroup) with All as the default",
+        "Puts the layout tools on the right of the toolbar with the List / Cards toggle on the far right, and shows a Columns button (dropdown of checkbox items) only in table view, replaced by a 'Sort by' dropdown in card view, never both",
+        "Makes the table header row sticky within the scroll region, with sortable column headers showing a sort icon",
+        "Adds a fixed Actions column as the last table column (header 'ACTIONS', not sortable, not in the Columns menu) holding a ghost icon button with an EllipsisVertical icon, an aria-label naming the record, and a DropdownMenu of row actions with destructive actions last; clicking it does not open the row",
+        "Renders cards in a responsive grid with the same ellipsis actions menu, a type badge, an avatar group and an updated timestamp in the footer",
+        "Renders the pagination bar below the list with a 'Records per page' selector (not 'Rows per page') and range text on the left, and first / previous / page numbers / next / last icon buttons with aria-labels on the right, with the current page as a primary button",
+        "Imports every icon from lucide-react, with no other icon set, and uses semantic tokens only with no hardcoded colours",
+        "Supports light and dark themes: all colours come from semantic tokens defined for both :root and .dark-theme, with no hardcoded colours (the logo's brand greens excepted), so it renders correctly when .dark-theme is toggled on the root; the sidebar and top navbar use bg-sidebar and border-sidebar-border, with no CLI-added --sidebar* overrides",
+        "Gives every table header and body cell the same padding: the [&:has([role=checkbox])]:pr-0 class (or any pr-0 / px-0 override on checkbox cells) does not appear on any TableHead or TableCell, including in components/ui/table.tsx",
+        "Sets font-size: 14px on the html element (not body or a wrapper) and re-bases Tailwind's scale in px in the global CSS (--spacing: 4px, px --text-* sizes, --radius: 10px), so e.g. h-9 renders at 36px and text-sm at 14px; fixed shell measurements (42px navbar, 264px / 48px sidebar) are in px, not rem",
+        "Sets color-scheme with the theme in the global CSS (color-scheme: light on :root and color-scheme: dark on .dark-theme, on the html element, not body), so scrollbars are not white in dark mode"
+      ]
+    }
+  ]
+}

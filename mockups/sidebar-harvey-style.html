@@ -1,0 +1,595 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Enverus One Sidebar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* Sidebar tokens from enverus-one/tokens.css (light and dark). */
+  :root, .light-theme {
+    color-scheme: light;
+    --background: oklch(0.95 0 0);
+    --foreground: oklch(0.145 0 0);
+    --muted: oklch(0.94 0 0);
+    --muted-foreground: oklch(0.4 0 0);
+    --primary: oklch(0.544 0.149 138.62);
+    --primary-foreground: oklch(1 0 0);
+    --info: oklch(0.481 0.094 239.6);
+    --ai: oklch(0.513 0.227 314.3);
+    --sidebar: oklch(0.98 0 0);
+    --sidebar-foreground: oklch(0.145 0 0);
+    --sidebar-accent: oklch(0.97 0 0);
+    --sidebar-accent-foreground: oklch(0.205 0 0);
+    --sidebar-border: oklch(0% 0 0 / 0.18);
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.145 0 0);
+    --border: oklch(0% 0 0 / 0.2);
+    --accent: oklch(0.97 0 0);
+    --accent-foreground: oklch(0.205 0 0);
+    --destructive: oklch(0.577 0.245 27.325);
+    --sidebar-ring: oklch(0.708 0 0);
+    --logo-green-light: #A0EF6E;
+    --logo-green: #56BC2F;
+  }
+  .dark-theme {
+    color-scheme: dark;
+    --background: oklch(20.5% 0 0);
+    --foreground: oklch(0.985 0 0);
+    --muted: oklch(0.325 0 0);
+    --muted-foreground: oklch(0.708 0 0);
+    --primary: oklch(0.544 0.149 138.62);
+    --primary-foreground: oklch(1 0 0);
+    --info: oklch(0.72 0.1 240.6);
+    --ai: oklch(0.643 0.244 313.7);
+    --sidebar: oklch(0.24 0 0);
+    --sidebar-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.269 0 0);
+    --sidebar-accent-foreground: oklch(0.985 0 0);
+    --sidebar-border: oklch(1 0 0 / 10%);
+    --popover: oklch(0.26 0 0);
+    --popover-foreground: oklch(0.985 0 0);
+    --border: oklch(100% 0 0 / 0.1);
+    --accent: oklch(0.325 0 0);
+    --accent-foreground: oklch(0.985 0 0);
+    --destructive: oklch(0.704 0.191 22.216);
+    --sidebar-ring: oklch(0.556 0 0);
+    --logo-green-light: #A0EF6E;
+    --logo-green: #56BC2F;
+  }
+
+  html { font-size: 14px; height: 100%; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Roboto Flex", system-ui, sans-serif;
+    background: var(--background);
+    color: var(--foreground);
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 24px;
+    align-items: flex-start;
+    gap: 40px;
+    padding: 32px;
+  }
+  .page-title { flex-shrink: 0; margin: 0; display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; }
+  .page-title h1 { font-size: 20px; line-height: 28px; font-weight: 500; margin: 0; color: var(--foreground); }
+  .page-title p { font-size: 14px; line-height: 20px; margin: 4px 0 0; color: var(--muted-foreground); }
+  .theme-switch { margin: 0; width: 200px; flex-shrink: 0; }
+  .options { display: flex; gap: 48px; flex: 1 1 0; min-height: 0; overflow-x: auto; }
+  .option { display: flex; flex-direction: column; flex-shrink: 0; min-height: 0; }
+  .option-title { flex-shrink: 0; font-size: 14px; font-weight: 500; line-height: 20px; margin: 0 0 12px; padding-bottom: 8px; border-bottom: 1px solid var(--primary); color: var(--foreground); }
+  .cols { display: flex; flex-wrap: nowrap; flex: 1 1 0; min-height: 0; gap: 32px; align-items: stretch; overflow-x: auto; }
+  .col { display: grid; grid-template-rows: minmax(0, 1fr); height: 100%; min-height: 0; }
+  .col > div { min-height: 0; height: 100%; }
+  .col.light { color-scheme: light; }
+  .col.dark { color-scheme: dark; }
+
+  /* Sidebar container: 264px expanded, sidebar token background and border. */
+  .sb {
+    width: 264px;
+    height: 100%;
+    background: var(--sidebar);
+    border-right: 1px solid var(--sidebar-border);
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    padding: 12px 6px 8px;
+    color: var(--sidebar-foreground);
+    overflow: hidden;
+  }
+
+  .sb-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 8px 14px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .brand-full { height: 17px; width: auto; flex-shrink: 0; }
+  .brand-mark { display: none; width: 18px; height: 18px; flex-shrink: 0; }
+  .sb.collapsed .brand-full { display: none !important; }
+  .sb.collapsed .brand-mark { display: block; }
+  .icon-btn {
+    width: 28px;
+    height: 28px;
+    display: inline-grid;
+    place-items: center;
+    border: 0;
+    background: transparent;
+    border-radius: 8px;
+    color: var(--muted-foreground);
+    cursor: pointer;
+  }
+  .icon-btn:hover { background: var(--sidebar-accent); color: var(--sidebar-foreground); }
+  .icon-btn svg { width: 16px; height: 16px; }
+  .head-actions { display: flex; gap: 2px; }
+
+  /* Scrollbar colors come from the sidebar border token, so they follow the light and dark themes. */
+  .sb-scroll { flex: 1; min-height: 0; overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--sidebar-border) transparent; }
+
+  .group { padding: 0 2px; margin-bottom: 14px; }
+  .group-label {
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 500;
+    color: var(--muted-foreground);
+    padding: 6px 8px 4px;
+  }
+
+  .item {
+    width: 100%;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 8px;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--sidebar-foreground);
+    font: inherit;
+    font-size: 14px;
+    line-height: 1;
+    font-weight: 400;
+    text-align: left;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .item:hover { background: var(--sidebar-accent); }
+  .item svg { width: 16px; height: 16px; flex-shrink: 0; }
+  .item .label { overflow: hidden; text-overflow: ellipsis; flex: 1; min-width: 0; }
+  .item.active {
+    background: var(--sidebar-accent);
+    color: var(--sidebar-accent-foreground);
+    font-weight: 500;
+  }
+  .item.muted { color: var(--muted-foreground); }
+  .item.muted:hover { color: var(--sidebar-foreground); }
+  .item .meta { font-size: 12px; color: var(--muted-foreground); }
+
+  .dot {
+    width: 4px; height: 4px; border-radius: 50%;
+    background: var(--muted-foreground);
+    margin: 0 6px 0 4px;
+    flex-shrink: 0;
+  }
+
+  .tile {
+    width: 18px; height: 18px;
+    border-radius: 5px;
+    display: grid; place-items: center;
+    font-size: 11px; font-weight: 500;
+    color: var(--primary-foreground);
+    flex-shrink: 0;
+  }
+  .tile.a { background: var(--primary); }
+  .tile.p { background: var(--info); }
+  .tile.d { background: var(--ai); }
+
+  .sb-foot {
+    margin-top: auto;
+    padding: 10px 6px 0;
+  }
+  .user {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 32px;
+    padding: 0 8px;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--sidebar-foreground);
+    font: inherit;
+    font-size: 14px;
+    line-height: 1;
+    font-weight: 400;
+    text-align: left;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .user:hover { background: var(--sidebar-accent); }
+  .avatar {
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--primary);
+    color: var(--primary-foreground);
+    display: grid; place-items: center;
+    font-size: 9px; font-weight: 500;
+    flex-shrink: 0;
+  }
+  .user .label { flex: 1; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+
+  [hidden] { display: none !important; }
+
+  /* Menu and Recents toggle, below the logo. Segmented control on the sidebar tokens. */
+  .mode-toggle { display: flex; gap: 2px; margin: 0 2px 10px; padding: 2px 8px; border: 1px solid var(--sidebar-border); border-radius: 8px; }
+  .mode-btn { flex: 1; height: 24px; padding: 0 8px; border: 0; border-radius: 6px; background: transparent; color: var(--muted-foreground); font: inherit; font-size: 12px; line-height: 1; cursor: pointer; }
+  .mode-btn:hover { color: var(--sidebar-foreground); }
+  .mode-btn[aria-pressed="true"] { background: var(--muted); color: var(--foreground); border: 1px solid var(--sidebar-border); font-weight: 500; }
+  .sb.collapsed .mode-toggle { display: none; }
+
+  /* Collapse toggle: panel-left-close when expanded, panel-left-open when collapsed. */
+  .chev-open { display: none; }
+  .sb.collapsed .chev-open { display: inline; }
+  .sb.collapsed .chev-close { display: none; }
+
+  /* New Chat in the Menu and Recents sidebar: a bordered, centered button. */
+  .item.new-chat { justify-content: center; text-align: center; height: 32px; margin: 0; border: 1px solid var(--primary); border-radius: 8px; background: transparent; color: var(--foreground); font-weight: 500; }
+  .item.new-chat:hover { background: var(--sidebar-accent); color: var(--foreground); }
+  .item.new-chat .label { flex: 0 1 auto; }
+  .new-chat-row { padding: 4px 8px 14px; }
+  .sb.collapsed .new-chat-row { padding: 0; }
+
+  /* Ellipsis on Pinned and Recent Chats items: visible on hover, opens an actions menu. */
+  .row-item { position: relative; }
+  .row-item .item { padding-right: 32px; }
+  .item-more { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); width: 24px; height: 24px; opacity: 0; }
+  .row-item:hover .item-more,
+  .row-item:focus-within .item-more,
+  .row-item.menu-open .item-more { opacity: 1; }
+  .sb.collapsed .item-more { display: none; }
+  .action-menu { position: absolute; right: 6px; top: 100%; z-index: 10; min-width: 160px; padding: 4px; background: var(--popover); color: var(--popover-foreground); border: 1px solid var(--border); border-radius: 8px; }
+  .action-item { display: block; width: 100%; height: 32px; padding: 0 8px; border: 0; border-radius: 6px; background: transparent; color: inherit; font: inherit; font-size: 14px; text-align: left; cursor: pointer; }
+  .action-item:hover { background: var(--accent); color: var(--accent-foreground); }
+  .action-item.destructive { color: var(--destructive); }
+
+  /* Search field that opens under the logo from the search icon button. */
+  .search-row { position: relative; margin: 0 2px 10px; }
+  .search-row svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--muted-foreground); pointer-events: none; }
+  .search-input { width: 100%; height: 32px; padding: 0 10px 0 32px; border: 1px solid var(--sidebar-border); border-radius: 8px; background: transparent; color: var(--sidebar-foreground); font: inherit; font-size: 14px; }
+  .search-input::placeholder { color: var(--muted-foreground); }
+  .search-input:focus-visible { outline: 2px solid var(--sidebar-ring); outline-offset: 1px; }
+  .sb.collapsed .search-row { display: none; }
+  .sb.collapsed .search.rail-search { display: inline-grid; }
+
+  /* Collapsed icon rail: 48px, icons only, 32px item squares (sidebar.md, Anatomy — Collapsed). */
+  /* More panel: grid-row 0fr to 1fr animates the height; visibility keeps closed items out of the tab order. */
+  .more-wrap { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 220ms ease; }
+  .more-wrap.open { grid-template-rows: 1fr; }
+  .more-panel { min-height: 0; overflow: hidden; visibility: hidden; transition: visibility 220ms ease; }
+  .more-wrap.open .more-panel { visibility: visible; }
+  @media (prefers-reduced-motion: reduce) {
+    .more-wrap, .more-panel { transition: none; }
+  }
+
+  .sb.collapsed { width: 48px; padding: 12px 8px 8px; }
+  .sb.collapsed .sb-head { flex-direction: column; gap: 8px; padding: 4px 0 14px; }
+  .sb.collapsed .brand-text,
+  .sb.collapsed .notif,
+  .sb.collapsed .search,
+  .sb.collapsed .group-label,
+  .sb.collapsed .item .label { display: none; }
+  .sb.collapsed .head-actions { flex-direction: column-reverse; }
+  .sb.collapsed .item { width: 32px; height: 32px; padding: 0; justify-content: center; margin: 0 auto; }
+  .sb.collapsed .group { padding: 0; }
+  .sb.collapsed .user { width: 32px; padding: 0; justify-content: center; margin: 0 auto; }
+  .sb.collapsed .user .label { display: none; }
+  .sb.collapsed .sb-foot { padding: 10px 0 0; }
+
+</style>
+</head>
+<body>
+
+<header class="page-title">
+  <div>
+    <h1>Enverus One Sidebars</h1>
+    <p>Supports default and collapsed widths</p>
+  </div>
+  <div class="mode-toggle theme-switch" role="group" aria-label="Page theme">
+    <button class="mode-btn" data-theme="light" aria-pressed="true">Light</button>
+    <button class="mode-btn" data-theme="dark" aria-pressed="false">Dark</button>
+  </div>
+</header>
+
+<div class="options" id="options">
+  <div class="option">
+    <div class="cols" id="cols-1"></div>
+  </div>
+  <div class="option" hidden>
+    <h2 class="option-title">Option 2</h2>
+    <div class="cols" id="cols-2"></div>
+  </div>
+</div>
+
+<template id="sidebar-tpl">
+<aside class="sb" aria-label="Primary">
+  <div class="sb-head">
+    <div class="brand">
+      <svg class="brand-full" width="150" viewBox="0 0 164 17" fill="none" aria-label="Enverus ONE" style="display: block; flex-shrink: 0;"><path fill-rule="evenodd" clip-rule="evenodd" d="M23.0012 15.9591V0.159084H26.4739L33.0704 10.2405H33.127V0.159084H36.3388V15.9591H33.127L26.2445 5.78916H26.1848V15.9591H23.0012Z" fill="var(--foreground)"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M43.7398 15.9591L38.3187 0.159084H41.8479L45.4306 11.3396H45.4903L49.2175 0.159084H52.4859L47.0365 15.9591H43.7398Z" fill="var(--foreground)"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M54.4657 15.9591V0.159084H65.2231V3.08H57.9353V6.45H65.022V9.29H57.9353V13.14H65.6222V15.9591H54.4657Z" fill="var(--foreground)"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M71.3891 7.28291H73.7681C74.2552 7.28291 74.714 7.25463 75.088 7.16666C75.462 7.08184 75.7763 6.96559 76.0057 6.79279C76.2351 6.61999 76.4362 6.39064 76.5493 6.10474C76.6656 5.81884 76.7222 5.50152 76.7222 5.10252C76.7222 4.32964 76.4928 3.78297 76.0057 3.44051C75.5186 3.12634 74.7737 2.95354 73.7681 2.95354H71.3891V7.28291ZM67.9761 15.9591V0.155184H73.9126C74.8869 0.155184 75.748 0.226477 76.5242 0.399274C77.3004 0.572072 77.929 0.857974 78.4758 1.26012C79.0195 1.66227 79.4218 2.14924 79.7077 2.78074C79.9937 3.41224 80.1383 4.15684 80.1383 5.01769C80.1383 5.64918 80.0534 6.19271 79.9089 6.67969C79.7643 7.16666 79.5632 7.59709 79.2772 7.97096C78.9912 8.34483 78.6455 8.65901 78.2433 8.91663C77.841 9.17426 77.3822 9.37533 76.8385 9.54813L80.3363 15.9591H76.6656L73.3972 10.0068H71.3891V15.9591H67.9761Z" fill="var(--foreground)"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M85.8737 15.5279C85.0692 15.2461 84.4123 14.8219 83.8938 14.2832C83.3784 13.7475 82.9761 13.0973 82.7184 12.3326C82.4607 11.5678 82.3445 10.6947 82.3445 9.75962V0.155151H85.814V9.67602C85.814 10.2426 85.8705 10.7504 85.9868 11.1746C86.1031 11.5988 86.2728 11.9951 86.5022 12.2768C86.7316 12.5865 87.0459 12.8125 87.4199 12.9549C87.7939 13.0973 88.2527 13.1809 88.7681 13.1809C89.802 13.1809 90.5186 12.8713 90.9774 12.2768C91.4362 11.6824 91.6656 10.8061 91.6656 9.67602V0.155151H95.0786V9.73485C95.0786 10.6947 94.9623 11.543 94.7046 12.3357C94.4469 13.0973 94.0729 13.7475 93.5575 14.2863C93.0421 14.8219 92.3822 15.2461 91.5777 15.531C90.7731 15.8127 89.8272 15.9552 88.7367 15.9552C87.621 15.949 86.6751 15.8096 85.8737 15.5279Z" fill="var(--foreground)"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M103.683 15.9552C102.822 15.9552 102.049 15.8736 101.361 15.6804C100.673 15.4871 100.041 15.2395 99.4972 14.9073C98.9535 14.5751 98.4633 14.1916 98.0359 13.7235C97.6053 13.2554 97.2628 12.7601 96.9736 12.2347L99.6135 10.7459C99.8429 11.1596 100.101 11.519 100.387 11.8481C100.701 12.1803 101.018 12.4279 101.389 12.6484C101.763 12.8689 102.134 13.0349 102.564 13.1437C102.995 13.2554 103.426 13.3098 103.884 13.3098C104.287 13.3098 104.657 13.2826 105.003 13.198C105.349 13.1165 105.635 13.0319 105.864 12.8658C106.094 12.7269 106.295 12.5336 106.439 12.3132C106.584 12.0927 106.641 11.8451 106.641 11.5401C106.641 11.2653 106.584 11.0177 106.439 10.7972C106.295 10.5768 106.094 10.4107 105.836 10.2174C105.578 10.0513 105.233 9.88521 104.833 9.74932C104.431 9.6104 103.972 9.47451 103.457 9.3356C102.998 9.19668 102.511 9.08797 102.052 8.94905C101.593 8.81014 101.135 8.67424 100.704 8.50815C100.273 8.34206 99.8712 8.14879 99.5003 7.92833C99.1264 7.70788 98.8121 7.46025 98.5544 7.15524C98.2967 6.85326 98.0673 6.49389 97.9227 6.10735C97.7782 5.7208 97.6933 5.25272 97.6933 4.7031C97.6933 3.98739 97.8379 3.35322 98.0956 2.80058C98.3816 2.24794 98.7555 1.77986 99.2709 1.36614C99.758 0.979596 100.361 0.677608 101.078 0.457157C101.766 0.236706 102.539 0.155169 103.4 0.155169C104.205 0.155169 104.95 0.236705 105.581 0.402799C106.241 0.568892 106.813 0.816522 107.332 1.09133C107.85 1.36614 108.306 1.69833 108.68 2.08487C109.054 2.47142 109.397 2.85796 109.683 3.26866L107.272 5.03227C107.071 4.70008 106.813 4.42528 106.527 4.15047C106.241 3.87566 105.924 3.65521 105.581 3.46193C105.236 3.26866 104.893 3.12975 104.519 3.02103C104.145 2.9093 103.774 2.85494 103.372 2.85494C102.627 2.85494 102.08 2.99385 101.681 3.26866C101.279 3.54347 101.078 3.90284 101.078 4.37092C101.078 4.67291 101.135 4.92356 101.279 5.14401C101.424 5.36446 101.625 5.55773 101.911 5.72382C102.197 5.88992 102.542 6.02581 102.945 6.16473C103.347 6.30364 103.806 6.43953 104.321 6.57845C104.78 6.69018 105.239 6.82608 105.698 6.96499C106.157 7.10391 106.615 7.2398 107.018 7.43307C107.448 7.59917 107.85 7.81962 108.193 8.04007C108.567 8.26052 108.881 8.53533 109.139 8.84034C109.397 9.14232 109.626 9.50169 109.771 9.91541C109.915 10.3291 110 10.77 110 11.2925C110 11.8995 109.884 12.4763 109.626 13.0561C109.368 13.6087 108.994 14.104 108.479 14.5177C107.964 14.9586 107.304 15.2908 106.527 15.5384C105.72 15.8163 104.774 15.9552 103.683 15.9552Z" fill="var(--foreground)"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M20.5374 9.29V6.45H12.8787V3.08H20.5374V0.159084H9.40605V13.14H12.8756V9.29H20.5374ZM12.8787 15.9591H20.5374V13.14H12.8787V15.9591Z" fill="var(--foreground)"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M4.15775 15.9591H9.40602L9.40605 13.14H4.15775V15.9591Z" style="fill: var(--logo-green-light)"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M0 9.29H3.4978V6.45H0V9.29Z" style="fill: var(--logo-green-light)"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M5.90822 9.29H20.54V6.45H5.90822V9.29Z" style="fill: var(--logo-green)"></path><path d="M118 0V16.1143" stroke="var(--foreground)"></path><g clip-path="url(#clip0_12817_36931)"><path d="M137.265 7.33899V8.86243C137.265 10.8546 136.763 12.4431 135.761 13.628C134.765 14.8129 133.424 15.4054 131.737 15.4054C130.084 15.4054 128.746 14.8129 127.724 13.628C126.702 12.4431 126.19 10.8546 126.19 8.86243V7.33899C126.19 5.35331 126.698 3.76803 127.714 2.58313C128.73 1.39172 130.064 0.796021 131.718 0.796021C133.404 0.796021 134.748 1.39172 135.751 2.58313C136.76 3.76803 137.265 5.35331 137.265 7.33899ZM136.073 8.86243V7.31946C136.073 5.63977 135.692 4.30839 134.931 3.32532C134.169 2.34225 133.098 1.85071 131.718 1.85071C130.377 1.85071 129.319 2.34225 128.544 3.32532C127.776 4.30839 127.392 5.63977 127.392 7.31946V8.86243C127.392 10.5551 127.779 11.893 128.554 12.8761C129.335 13.8591 130.396 14.3507 131.737 14.3507C133.118 14.3507 134.185 13.8591 134.94 12.8761C135.696 11.893 136.073 10.5551 136.073 8.86243ZM150.907 0.991333V15.2101H149.696L141.532 3.04212V15.2101H140.321V0.991333H141.532L149.706 13.1593V0.991333H150.907ZM154.54 15.2101V0.991333H163.329V2.01672H155.741V7.36829H162.382V8.39368H155.741V14.1944H163.378V15.2101H154.54Z" fill="var(--foreground)"></path></g><defs><clipPath id="clip0_12817_36931"><rect width="38" height="15" fill="var(--foreground)" transform="translate(126 0.557129)"></rect></clipPath></defs></svg>
+      <svg class="brand-mark" viewBox="0 0 120 97" aria-label="Enverus ONE" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" fill="var(--foreground)" d="M115.5,54.6v-16H74.8V18.9h42.3V2H54.6v75.4h20.2V54.6H115.5z M74.8,93.8h44.6V77.4H74.8V93.8z"></path><polygon fill-rule="evenodd" clip-rule="evenodd" style="fill: var(--logo-green-light)" points="24.2,93.8 54.7,93.8 54.7,77.4 24.2,77.4"></polygon><polygon fill-rule="evenodd" clip-rule="evenodd" style="fill: var(--logo-green-light)" points="0,54.8 20.3,54.8 20.3,38.4 0,38.4"></polygon><polygon fill-rule="evenodd" clip-rule="evenodd" style="fill: var(--logo-green)" points="34.2,54.8 115.5,54.8 115.5,38.4 34.2,38.4"></polygon></svg>
+    </div>
+    <div class="head-actions">
+      <button class="icon-btn search" aria-label="Search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      </button>
+      <button class="icon-btn collapse-btn" aria-label="Collapse sidebar" aria-expanded="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/><path class="chev-close" d="m16 15-3-3 3-3"/><path class="chev-open" d="m14 9 3 3-3 3"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="mode-toggle" role="group" aria-label="Sidebar view" hidden>
+    <button class="mode-btn" data-mode="menu" aria-pressed="true">Menu</button>
+    <button class="mode-btn" data-mode="recents" aria-pressed="false">Recents</button>
+  </div>
+
+  <nav class="sb-scroll" aria-label="Primary navigation">
+    <div class="group recents-view" hidden>
+      <button class="item muted"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"/></svg><span class="label">Permian Type Curve Review</span></button>
+      <button class="item muted"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M7 11.207a.5.5 0 0 1 .146-.354l4-4a.5.5 0 0 1 .708 0l3.292 3.292a.5.5 0 0 0 .708 0l4.292-4.292a.5.5 0 0 1 .854.354V16a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1z"/></svg><span class="label">Enverus Development Outlook</span></button>
+      <button class="item muted"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="label">Acme Acquisition</span></button>
+      <button class="item muted"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="8" x="3" y="3" rx="2"/><path d="M7 11v4a2 2 0 0 0 2 2h4"/><rect width="8" height="8" x="13" y="13" rx="2"/></svg><span class="label">Delaware Type Curve Flow</span></button>
+      <button class="item muted"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"/></svg><span class="label">Q3 Acreage Screen for Delaware</span></button>
+      <button class="item muted"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg><span class="label">Strike</span></button>
+      <button class="item muted"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="label">Project Compass</span></button>
+      <button class="item muted"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="8" x="3" y="3" rx="2"/><path d="M7 11v4a2 2 0 0 0 2 2h4"/><rect width="8" height="8" x="13" y="13" rx="2"/></svg><span class="label">Permian Ranking Flow</span></button>
+      <button class="item muted"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"/></svg><span class="label">Bakken Offset Well Analysis</span></button>
+    </div>
+    <div class="group menu-view">
+      <button class="item muted">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"/><path d="M12 7v6"/><path d="M9 10h6"/></svg>
+        <span class="label">New Chat</span>
+      </button>
+      <button class="item active" aria-current="page">
+        <svg viewBox="0 0 120 97" fill="none" aria-hidden="true" focusable="false"><path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor" d="M115.5,54.6v-16H74.8V18.9h42.3V2H54.6v75.4h20.2V54.6H115.5z M74.8,93.8h44.6V77.4H74.8V93.8z"/><polygon fill-rule="evenodd" clip-rule="evenodd" style="fill: var(--logo-green-light)" points="24.2,93.8 54.7,93.8 54.7,77.4 24.2,77.4"/><polygon fill-rule="evenodd" clip-rule="evenodd" style="fill: var(--logo-green-light)" points="0,54.8 20.3,54.8 20.3,38.4 0,38.4"/><polygon fill-rule="evenodd" clip-rule="evenodd" style="fill: var(--logo-green)" points="34.2,54.8 115.5,54.8 115.5,38.4 34.2,38.4"/></svg>
+        <span class="label">Vera</span>
+      </button>
+      <button class="item muted">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+        <span class="label">Discover</span>
+      </button>
+      <button class="item muted">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="8" x="3" y="3" rx="2"/><path d="M7 11v4a2 2 0 0 0 2 2h4"/><rect width="8" height="8" x="13" y="13" rx="2"/></svg>
+        <span class="label">Flows</span>
+      </button>
+      <button class="item muted">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="16" y="16" width="6" height="6" rx="1"/><path d="M12 8v4M5 16v-2h14v2"/></svg>
+        <span class="label">Spaces</span>
+      </button>
+      <div class="more-wrap">
+      <div class="more-panel">
+        <button class="item muted">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m16 8-2 6-6 2 2-6z"/></svg>
+          <span class="label">Discover</span>
+        </button>
+        <button class="item muted">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          <span class="label">Applications</span>
+        </button>
+        <button class="item muted">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/></svg>
+          <span class="label">Skills</span>
+        </button>
+        <button class="item muted">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg>
+          <span class="label">Concepts</span>
+        </button>
+        <button class="item muted">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5V4.5A2.5 2.5 0 0 1 6.5 2H20v15H6.5A2.5 2.5 0 0 0 4 19.5z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/></svg>
+          <span class="label">Library</span>
+        </button>
+        <button class="item muted">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 12h5M15 12h5"/><circle cx="12" cy="12" r="3"/></svg>
+          <span class="label">Connections</span>
+        </button>
+      </div>
+      </div>
+      <button class="item muted more-btn" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+        <span class="label">More</span>
+      </button>
+    </div>
+
+    <div class="group">
+      <div class="group-label">Pinned</div>
+      <button class="item muted">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M7 11.207a.5.5 0 0 1 .146-.354l4-4a.5.5 0 0 1 .708 0l3.292 3.292a.5.5 0 0 0 .708 0l4.292-4.292a.5.5 0 0 1 .854.354V16a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1z"/></svg>
+        <span class="label">Enverus Development Outlook</span>
+      </button>
+      <button class="item muted">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
+        <span class="label">Strike</span>
+      </button>
+      <button class="item muted">
+        <svg viewBox="0 0 120 97" fill="none" aria-hidden="true" focusable="false"><path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor" d="M115.5,54.6v-16H74.8V18.9h42.3V2H54.6v75.4h20.2V54.6H115.5z M74.8,93.8h44.6V77.4H74.8V93.8z"/><polygon style="fill: var(--logo-green-light)" points="24.2,93.8 54.7,93.8 54.7,77.4 24.2,77.4"/><polygon style="fill: var(--logo-green-light)" points="0,54.8 20.3,54.8 20.3,38.4 0,38.4"/><polygon style="fill: var(--logo-green)" points="34.2,54.8 115.5,54.8 115.5,38.4 34.2,38.4"/></svg>
+        <span class="label">Enverus One</span>
+      </button>
+    </div>
+
+    <div class="group">
+      <div class="group-label">Recents</div>
+      <button class="item muted"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"/></svg><span class="label">Permian Type Curve Review</span></button>
+      <button class="item muted"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"/></svg><span class="label">Q3 Acreage Screen for Delaware</span></button>
+      <button class="item muted"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"/></svg><span class="label">Bakken Offset Well Analysis</span></button>
+      <button class="item muted">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        <span class="label">View All</span>
+      </button>
+    </div>
+
+  </nav>
+
+</aside>
+</template>
+
+
+<script>
+  // Render the same sidebar markup once per theme. Dark uses the .dark-theme token block.
+  const tpl = document.getElementById('sidebar-tpl');
+  // Close every open actions menu, on an outside click or when a menu item is picked.
+  const closeMenus = () => {
+    document.querySelectorAll('.action-menu').forEach(menu => { menu.hidden = true; });
+    document.querySelectorAll('.row-item.menu-open').forEach(row => {
+      row.classList.remove('menu-open');
+      row.querySelector('.item-more').setAttribute('aria-expanded', 'false');
+    });
+  };
+  document.addEventListener('click', closeMenus);
+  // Page theme switcher: .dark-theme on the root restyles the page. The light and dark sidebar columns keep their own theme classes.
+  document.querySelectorAll('.theme-switch .mode-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark-theme', btn.dataset.theme === 'dark');
+      document.querySelectorAll('.theme-switch .mode-btn').forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
+    });
+  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenus(); });
+  [['Light theme', '', false, 'cols-1'], ['Dark theme', 'dark-theme', false, 'cols-1'], ['Light theme, Menu and Recents', 'light-theme', true, 'cols-2'], ['Dark theme, Menu and Recents', 'dark-theme', true, 'cols-2']].forEach(([label, cls, withToggle, host]) => {
+    const col = document.createElement('div');
+    col.className = 'col';
+    // The dark Option 1 sidebar is hidden; the page opens in the light theme.
+    col.hidden = label === 'Dark theme';
+    const wrap = document.createElement('div');
+    if (cls) wrap.className = cls;
+    wrap.appendChild(tpl.content.cloneNode(true));
+    col.appendChild(wrap);
+    document.getElementById(host).appendChild(col);
+    // More toggles the hidden items in the first section. The panel animates open and closed.
+    const more = col.querySelector('.more-btn');
+    const moreWrap = col.querySelector('.more-wrap');
+    more.addEventListener('click', () => {
+      const open = !moreWrap.classList.contains('open');
+      moreWrap.classList.toggle('open', open);
+      more.setAttribute('aria-expanded', String(open));
+      more.querySelector('.label').textContent = open ? 'Less' : 'More';
+    });
+    // Every item shows its label as a tooltip on hover, expanded or collapsed.
+    col.querySelectorAll('.item').forEach(item => {
+      const text = item.querySelector('.label');
+      if (text) item.title = text.textContent;
+    });
+    // Collapse to the 48px rail.
+    const aside = col.querySelector('.sb');
+    const toggle = col.querySelector('.collapse-btn');
+    toggle.addEventListener('click', () => {
+      const collapsed = aside.classList.toggle('collapsed');
+      toggle.setAttribute('aria-expanded', String(!collapsed));
+      toggle.setAttribute('aria-label', collapsed ? 'Expand sidebar' : 'Collapse sidebar');
+      col.querySelectorAll('.item').forEach(item => {
+        const text = item.querySelector('.label');
+        if (text) item.setAttribute('aria-label', text.textContent);
+      });
+    });
+    // Search: the icon button opens a field under the logo, above New Chat.
+    const searchRow = document.createElement('div');
+    searchRow.className = 'search-row';
+    searchRow.hidden = true;
+    searchRow.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><input type="search" class="search-input" placeholder="Search" aria-label="Search">';
+    col.querySelector('.sb-head').after(searchRow);
+    const searchBtn = col.querySelector('.icon-btn.search');
+    searchBtn.setAttribute('aria-expanded', 'false');
+    searchBtn.addEventListener('click', () => {
+      // From the collapsed rail, expand the sidebar so the search field has room.
+      if (aside.classList.contains('collapsed')) toggle.click();
+      const open = searchRow.hidden;
+      searchRow.hidden = !open;
+      searchBtn.setAttribute('aria-expanded', String(open));
+      if (open) searchRow.querySelector('input').focus();
+    });
+    // New Chat is a bordered, centered button in every column, wrapped in the logo header's padding.
+    const newChat = col.querySelector('.menu-view .item');
+    newChat.classList.add('new-chat');
+    const newChatRow = document.createElement('div');
+    newChatRow.className = 'new-chat-row';
+    newChat.before(newChatRow);
+    newChatRow.appendChild(newChat);
+    if (withToggle) {
+      // Menu and Recents: the Recent Apps, Recent Chats and Spaces sections are replaced by the modes.
+      col.querySelectorAll('.sb-scroll > .group:not(.menu-view):not(.recents-view)').forEach(group => group.remove());
+      // The search icon stays visible on the collapsed rail, above New Chat.
+      col.querySelector('.icon-btn.search').classList.add('rail-search');
+      const modeToggle = col.querySelector('.mode-toggle');
+      const menuView = col.querySelector('.menu-view');
+      const recentsView = col.querySelector('.recents-view');
+      // In this column the New Chat row moves above the toggle, under the logo header.
+      modeToggle.before(col.querySelector('.new-chat-row'));
+      const setMode = mode => {
+        menuView.hidden = mode !== 'menu';
+        recentsView.hidden = mode !== 'recents';
+        modeToggle.querySelectorAll('.mode-btn').forEach(btn => {
+          btn.setAttribute('aria-pressed', String(btn.dataset.mode === mode));
+        });
+      };
+      modeToggle.addEventListener('click', e => {
+        const btn = e.target.closest('.mode-btn');
+        if (btn) setMode(btn.dataset.mode);
+      });
+      // The menu always shows the full list, so this column has no More/Less toggle.
+      more.remove();
+      moreWrap.classList.add('open');
+      modeToggle.hidden = false;
+      setMode('menu');
+    }
+    // Pinned and Recent Chats items get an ellipsis that opens an actions menu.
+    col.querySelectorAll('.sb-scroll > .group').forEach(group => {
+      const heading = group.querySelector('.group-label');
+      if (!heading || !['Pinned', 'Recents'].includes(heading.textContent)) return;
+      const pinned = heading.textContent === 'Pinned';
+      group.querySelectorAll('.item').forEach(item => {
+        const text = item.querySelector('.label').textContent;
+        if (text.startsWith('View All')) return;
+        const row = document.createElement('div');
+        row.className = 'row-item';
+        item.before(row);
+        row.appendChild(item);
+        const more = document.createElement('button');
+        more.className = 'icon-btn item-more';
+        more.setAttribute('aria-label', 'More actions for ' + text);
+        more.setAttribute('aria-haspopup', 'menu');
+        more.setAttribute('aria-expanded', 'false');
+        more.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>';
+        const menu = document.createElement('div');
+        menu.className = 'action-menu';
+        menu.setAttribute('role', 'menu');
+        menu.hidden = true;
+        const actions = [pinned ? 'Unpin' : 'Pin', 'Rename', 'Share', 'Delete'];
+        menu.innerHTML = actions.map(action => '<button class="action-item' + (action === 'Delete' ? ' destructive' : '') + '" role="menuitem">' + action + '</button>').join('');
+        row.append(more, menu);
+        more.addEventListener('click', e => {
+          e.stopPropagation();
+          const open = menu.hidden;
+          closeMenus();
+          menu.hidden = !open;
+          more.setAttribute('aria-expanded', String(open));
+          row.classList.toggle('menu-open', open);
+        });
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
